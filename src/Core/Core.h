@@ -25,3 +25,6 @@
 // Created Classes
 #include "Core/CoreTypes.h"
 #include "Core/Log.h"
+
+// Third Party Class
+#include "stb_image.h"
