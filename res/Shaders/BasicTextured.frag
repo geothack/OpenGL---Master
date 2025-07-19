@@ -4,7 +4,7 @@ in vec2 Coords;
 
 out vec4 Color;
 
-layout (location = 0) uniform sampler2D Image;
+uniform sampler2D Image;
 
 void main()
 {

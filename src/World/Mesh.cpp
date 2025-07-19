@@ -34,13 +34,13 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& ind
 
 void Mesh::Render(openglShader& shader)
 {
-	//for (uint32_t i = 0; i < mMeshTextures.size(); i++)
-	//{
-	//	shader.SetInt(mMeshTextures[i].GetName(), mMeshTextures[i].GetHandle());
-	//	//glActiveTexture(GL_TEXTURE0 + i);
-	//	mMeshTextures[i].Attach();
-	//	glBindTextureUnit(i, mMeshTextures[i].GetHandle());
-	//}
+	for (uint32_t i = 0; i < mMeshTextures.size(); i++)
+	{
+		shader.SetInt(mMeshTextures[i].GetName(), i);
+		//glActiveTexture(GL_TEXTURE0 + i);
+		mMeshTextures[i].Attach();
+		glBindTextureUnit(i, mMeshTextures[i].GetHandle());
+	}
 
 	glBindVertexArray(mVertexArrayObject);
 	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);

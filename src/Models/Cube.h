@@ -1,18 +1,14 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <vector>
-
 #include "Render/Model.h"
 #include "Render/openglTexture.h"
+#include "World/Transform.h"
 
 class Cube : public Model
 {
 public:
 
-	Cube(const glm::vec3& position, const glm::vec3& size) : mPosition(position), mSize(size)
+	Cube(const Transform& transform) : mTransform(transform)
 	{
         Init();
 	}
@@ -80,9 +76,9 @@ public:
     void Render(openglShader& shader)
     {
         glm::mat4 model = glm::mat4(1.0);
-        model = glm::translate(model, mPosition);
-        model = glm::scale(model, mSize);
-        model = glm::rotate(model, glm::radians(20.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+        model = glm::translate(model, mTransform.GetPosition());
+        model = glm::scale(model, mTransform.GetScale());
+        model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
 
         shader.Attach();
         shader.SetMat4("Model", model);
@@ -91,6 +87,5 @@ public:
     }
 
 private:
-	glm::vec3 mPosition;
-	glm::vec3 mSize;
+    Transform mTransform;
 };

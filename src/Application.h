@@ -25,8 +25,8 @@ private:
 
 	openglShader mBasicShader = openglShader("res/Shaders/BasicTextured.vert", "res/Shaders/BasicTextured.frag");
 
-	openglTexture mRockTexture = openglTexture("Image","res/Textures/rocks.jpg");
+	//openglTexture mRockTexture = openglTexture("Image","res/Textures/rocks.jpg");
 
-	Cube mCube = Cube(glm::vec3(0.0), glm::vec3(1.0));
+	Cube mCube = Cube(Transform(glm::vec3(0.0), glm::vec3(1.0f, 0.3f, 0.5f)));
 };
 

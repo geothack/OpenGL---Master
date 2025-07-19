@@ -9,9 +9,9 @@ public:
 
 
 public:
-	inline const glm::vec3* const GetPosition() const { return &mPosition; }
-	inline const glm::vec3* const GetRotation() const { return &mRotation; }
-	inline const glm::vec3* const GetScale() const { return &mScale; }
+	inline glm::vec3& const GetPosition() { return mPosition; }
+	inline glm::vec3& const GetRotation() { return mRotation; }
+	inline glm::vec3& const GetScale() { return mScale; }
 
 	inline const void const SetPosition(const glm::vec3* position) { mPosition = *position; }
 	inline const void const SetRotation(const glm::vec3* rotation) { mPosition = *rotation; }
