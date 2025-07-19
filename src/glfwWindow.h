@@ -20,6 +20,9 @@ public:
 	GLFWwindow* const Get() const { return mPlatformWindow; }
 
 private:
+	static void APIENTRY DebugLog(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam);
+
+private:
 	GLFWwindow* mPlatformWindow;
 
 };

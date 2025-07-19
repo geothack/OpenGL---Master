@@ -18,13 +18,14 @@ project "OpenGL-Master"
         "src", 
         "deps/glad/include", 
         "deps/glm/include",
+        "deps/assimp/include",
         
     }
 
     libdirs 
     {
        "deps/glfw/lib", 
-       --"libs/ttf/lib", 
+       "deps/assimp/lib", 
        --"libs/openal/libs", 
        --"libs/snd/libs" 
     }
@@ -55,10 +56,14 @@ project "OpenGL-Master"
       buildoptions { "/MP" }
       kind "ConsoleApp"
 
-      --links { "dsndfile.lib" }
+      links 
+      {
+          "assimp-vc143-mtd.lib",
+          "assimp-vc143-mtd.dll",
+      }
 
       postbuildcommands { "{COPY} deps/glfw/lib/glfw3.dll bin/Debug" }
-      --postbuildcommands { "{COPY} libs/openal/libs/OpenAL32.dll bin/Debug" }
+      postbuildcommands { "{COPY} deps/assimp/lib/assimp-vc143-mtd.dll bin/Debug" }
 
    filter "configurations:Release"
       defines { "NDEBUG" }
@@ -66,7 +71,11 @@ project "OpenGL-Master"
       buildoptions { "/MP" }
       kind "WindowedApp"
 
-      --links { "rsndfile.lib" }
+      links 
+      {
+          "assimp-vc143-mt.lib",
+          "assimp-vc143-mt.dll",
+      }
 
     filter "files:**.c"
       flags { "NoPCH" }

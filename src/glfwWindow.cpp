@@ -23,6 +23,9 @@ glfwWindow::glfwWindow(std::string_view title, const int width, const int height
 	{
 		std::println("Failed to initialize glad");
 	}
+
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(DebugLog, nullptr);
 }
 
 glfwWindow::~glfwWindow()
@@ -39,4 +42,30 @@ void glfwWindow::Events() const
 void glfwWindow::SwapBuffers() const
 {
 	glfwSwapBuffers(mPlatformWindow);
+}
+
+void glfwWindow::DebugLog(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam)
+{
+	switch (severity)
+	{
+	case GL_DEBUG_SEVERITY_HIGH:
+		std::println("OpenGL High {}", message);
+		break;
+
+	case GL_DEBUG_SEVERITY_MEDIUM:
+		std::println("OpenGL Medium {}", message);
+		break;
+
+	case GL_DEBUG_SEVERITY_LOW:
+		std::println("OpenGL Low {}", message);
+		break;
+
+	case GL_DEBUG_SEVERITY_NOTIFICATION:
+		std::println("OpenGL Notification {}", message);
+		break;
+
+	default:
+
+		break;
+	}
 }
