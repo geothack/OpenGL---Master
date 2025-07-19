@@ -14,15 +14,29 @@ project "OpenGLBreakout"
 
     includedirs 
     { 
-        --"libs/sdl3/include", 
+        "deps/glfw/include", 
         "src", 
         --"libs/glad/glad/include", 
         
-  }
+    }
 
-    --libdirs { "libs/sdl3/lib/x64", "libs/ttf/lib", "libs/openal/libs", "libs/snd/libs" }
+    libdirs 
+    {
+       "deps/glfw/lib", 
+       --"libs/ttf/lib", 
+       --"libs/openal/libs", 
+       --"libs/snd/libs" 
+    }
 
-    --links { "SDL3.dll","SDL3.lib","freetype.lib","freetype.dll","OpenAL32.lib","OpenAL32.dll" }
+    links 
+    {
+       "glfw3.dll",
+       "glfw3.lib",
+       --"freetype.lib",
+       --"freetype.dll",
+       --"OpenAL32.lib",
+       --"OpenAL32.dll"
+    }
 
    files
     { 
@@ -42,7 +56,7 @@ project "OpenGLBreakout"
 
       --links { "dsndfile.lib" }
 
-      --postbuildcommands { "{COPY} libs/sdl3/lib/x64/SDL3.dll bin/Debug" }
+      postbuildcommands { "{COPY} deps/glfw/lib/glfw3.dll bin/Debug" }
       --postbuildcommands { "{COPY} libs/openal/libs/OpenAL32.dll bin/Debug" }
 
    filter "configurations:Release"

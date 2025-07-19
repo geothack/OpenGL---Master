@@ -1,6 +1,11 @@
-#include <print>
+#include "glfwWindow.h"
 
 int main()
 {
-    std::println("Hello World");
+    auto gameWindow = glfwWindow("OpenGl", 800, 600);
+
+    while (true)
+    {
+        gameWindow.Events();
+    }
 }
