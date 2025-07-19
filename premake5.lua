@@ -16,7 +16,7 @@ project "OpenGLBreakout"
     { 
         "deps/glfw/include", 
         "src", 
-        --"libs/glad/glad/include", 
+        "deps/glad/include", 
         
     }
 
@@ -67,8 +67,8 @@ project "OpenGLBreakout"
 
       --links { "rsndfile.lib" }
 
-    --filter "files:**.c"
-      --flags { "NoPCH" }
+    filter "files:**.c"
+      flags { "NoPCH" }
 
       --postbuildcommands { "{COPY} libs/sdl3/lib/x64/SDL3.dll bin/Release" }
       --postbuildcommands { "{COPY} libs/openal/libs/OpenAL32.dll bin/Release" }

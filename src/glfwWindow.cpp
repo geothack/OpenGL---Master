@@ -16,7 +16,12 @@ glfwWindow::glfwWindow(std::string_view title, const int width, const int height
 		std::println("Glfw failed to create window");
 	}
 
-	
+	glfwMakeContextCurrent(mPlatformWindow);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) 
+	{
+		std::println("Failed to initialize glad");
+	}
 }
 
 glfwWindow::~glfwWindow()
