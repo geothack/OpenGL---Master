@@ -1,5 +1,6 @@
 #include "Core/Core.h"
 #include "openglShader.h"
+#include "Core/Error.h"
 
 openglShader::openglShader(const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragShaderPath, const std::filesystem::path& geoShaderPath)
 {
@@ -64,7 +65,11 @@ void openglShader::SetVec3(std::string_view name, const glm::vec3& value) const
 {
 	const auto uniform = mUniformCache.find(name.data());
 	const auto string = std::format("Failed to find uniform {}", name);
-	//Verify::Update(string, uniform != std::ranges::cend(mUniformCache));
+	
+	if (uniform == std::ranges::cend(mUniformCache))
+	{
+		Error error(string);
+	}
 
 	::glUniform3fv(uniform->second, 1, &value[0]);
 }
@@ -73,7 +78,11 @@ void openglShader::SetMat4(std::string_view name, const glm::mat4& value) const
 {
 	const auto uniform = mUniformCache.find(name.data());
 	const auto string = std::format("Failed to find uniform {}", name);
-	//Verify::Update(string, uniform != std::ranges::cend(mUniformCache));
+	
+	if (uniform == std::ranges::cend(mUniformCache))
+	{
+		Error error(string);
+	}
 
 	::glUniformMatrix4fv(uniform->second, 1, GL_FALSE, glm::value_ptr(value));
 }
@@ -82,7 +91,11 @@ void openglShader::SetInt(std::string_view name, int value) const
 {
 	const auto uniform = mUniformCache.find(name.data());
 	const auto string = std::format("Failed to find uniform {}", name);
-	//Verify::Update(string, uniform != std::ranges::cend(mUniformCache));
+
+	if (uniform == std::ranges::cend(mUniformCache))
+	{
+		Error error(string);
+	}
 
 	::glUniform1i(uniform->second, value);
 }
@@ -91,7 +104,11 @@ void openglShader::SetFloat(std::string_view name, float value) const
 {
 	const auto uniform = mUniformCache.find(name.data());
 	const auto string = std::format("Failed to find uniform {}", name);
-	//Verify::Update(string, uniform != std::ranges::cend(mUniformCache));
+
+	if (uniform == std::ranges::cend(mUniformCache))
+	{
+		Error error(string);
+	}
 
 	::glUniform1f(uniform->second, value);
 }
@@ -119,9 +136,12 @@ void openglShader::Create(uint32_t& shader, const char* path, uint32_t type)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &mSuccess);
 
 	glGetShaderInfoLog(shader, 512, NULL, mInfoLog);
-	std::string error = std::format("Failed to compile shader {}", mInfoLog);
+	std::string string = std::format("Failed to compile shader {}", mInfoLog);
 
-	//Verify::Update(error, mSuccess);
+	if (mSuccess == 0)
+	{
+		Error error(string);
+	}
 
 }
 
@@ -135,9 +155,12 @@ void openglShader::LinkShader()
 	glGetProgramiv(mProgram, GL_LINK_STATUS, &mSuccess);
 
 	glGetProgramInfoLog(mProgram, 512, NULL, mInfoLog);
-	std::string error = std::format("Failed to link program {}", mInfoLog);
+	std::string string = std::format("Failed to link program {}", mInfoLog);
 
-	//Verify::Update(error, mSuccess);
+	if (mSuccess == 0)
+	{
+		Error error(string);
+	}
 
 	glDeleteShader(mVertex);
 	glDeleteShader(mFragment);

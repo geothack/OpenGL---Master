@@ -20,6 +20,8 @@
 #include <fstream>
 #include <sstream>
 #include <memory>
+#include <format>
 
 // Created Classes
 #include "Core/CoreTypes.h"
+#include "Core/Log.h"

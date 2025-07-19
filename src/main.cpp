@@ -3,5 +3,13 @@
 
 int main()
 {
-    Application app;
+    try
+    {
+        Application app;
+    }
+    catch (std::exception exception)
+    {
+        Log::Info(exception.what());
+        return -1;
+    }
 }
