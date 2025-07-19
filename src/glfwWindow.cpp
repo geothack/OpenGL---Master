@@ -29,3 +29,8 @@ void glfwWindow::Events() const
 {
 	glfwPollEvents();
 }
+
+void glfwWindow::SwapBuffers() const
+{
+	glfwSwapBuffers(mPlatformWindow);
+}

@@ -20,6 +20,10 @@ public:
 	void Events() const;
 
 
+	void SwapBuffers() const;
+
+	GLFWwindow* const Get() const { return mPlatformWindow; }
+
 private:
 	GLFWwindow* mPlatformWindow;
 
