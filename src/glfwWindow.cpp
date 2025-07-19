@@ -1,5 +1,6 @@
 #include "Core/Core.h"
 #include "glfwWindow.h"
+#include "Input/Input.h"
 
 glfwWindow::glfwWindow(std::string_view title, const int width, const int height)
 {
@@ -24,6 +25,8 @@ glfwWindow::glfwWindow(std::string_view title, const int width, const int height
 		std::println("Failed to initialize glad");
 	}
 
+	glfwSetKeyCallback(mPlatformWindow, Keyboard::KeyCallback);
+
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(DebugLog, nullptr);
 }
@@ -37,6 +40,11 @@ glfwWindow::~glfwWindow()
 void glfwWindow::Events() const
 {
 	glfwPollEvents();
+
+	if (GInput->KeyWentDown(GLFW_KEY_ESCAPE))
+	{
+		glfwSetWindowShouldClose(mPlatformWindow, true);
+	}
 }
 
 void glfwWindow::SwapBuffers() const

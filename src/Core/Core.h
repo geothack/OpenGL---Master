@@ -22,4 +22,4 @@
 #include <memory>
 
 // Created Classes
-
+#include "Core/CoreTypes.h"

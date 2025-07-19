@@ -1,5 +1,6 @@
 #include "Core/Core.h"
 #include "Application.h"
+#include "Input/Input.h"
 
 uint32_t VAO;
 
@@ -44,6 +45,8 @@ void Application::Update()
 
 		mGameWindow.SwapBuffers();
 	}
+
+    GInput->Free();
 }
 
 void Application::Init()
