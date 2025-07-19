@@ -1,3 +1,4 @@
+#include "Core/Core.h"
 #include "glfwWindow.h"
 
 glfwWindow::glfwWindow(std::string_view title, const int width, const int height)

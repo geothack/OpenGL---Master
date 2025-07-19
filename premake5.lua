@@ -1,9 +1,9 @@
 
-workspace "OpenGLBreakout"
+workspace "OpenGL-Master"
     configurations {"Debug","Release"}
     
 
-project "OpenGLBreakout"
+project "OpenGL-Master"
     kind "ConsoleApp"
 
     language "C++"
@@ -17,6 +17,7 @@ project "OpenGLBreakout"
         "deps/glfw/include", 
         "src", 
         "deps/glad/include", 
+        "deps/glm/include",
         
     }
 
@@ -45,8 +46,8 @@ project "OpenGLBreakout"
       "src/**.c"
     }
 
-    --pchheader "Utility/PreLibrary.h"
-    --pchsource "src/Game/Utility/PreLibrary.cpp"
+    pchheader "Core/Core.h"
+    pchsource "src/Core/Core.cpp"
 
    filter "configurations:Debug"
       defines { "DEBUG" }
