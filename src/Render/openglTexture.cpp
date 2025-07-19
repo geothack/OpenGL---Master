@@ -2,7 +2,7 @@
 #include "openglTexture.h"
 #include "Core/Error.h"
 
-openglTexture::openglTexture(const std::filesystem::path& path, bool flip)
+openglTexture::openglTexture(std::string_view samplerName, const std::filesystem::path& path, bool flip) : mSamplerName(samplerName.data())
 {
     glGenTextures(1, &mHandle);
 

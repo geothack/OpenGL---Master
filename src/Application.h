@@ -3,6 +3,7 @@
 #include "glfwWindow.h"
 #include "Render/openglShader.h"
 #include "Render/openglTexture.h"
+#include "Models/Cube.h"
 
 class Application
 {
@@ -24,6 +25,8 @@ private:
 
 	openglShader mBasicShader = openglShader("res/Shaders/BasicTextured.vert", "res/Shaders/BasicTextured.frag");
 
-	openglTexture mRockTexture = openglTexture("res/Textures/rocks.jpg");
+	openglTexture mRockTexture = openglTexture("Image","res/Textures/rocks.jpg");
+
+	Cube mCube = Cube(glm::vec3(0.0), glm::vec3(1.0));
 };
 

@@ -21,6 +21,7 @@
 #include <sstream>
 #include <memory>
 #include <format>
+#include <vector>
 
 // Created Classes
 #include "Core/CoreTypes.h"
