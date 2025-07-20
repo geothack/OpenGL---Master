@@ -21,6 +21,13 @@ std::vector<Vertex> Vertex::GenerateList(const float* vertice, const int numVert
 			vertice[i * stride + 3],
 			vertice[i * stride + 4]
 		);
+
+		ret[i].Normals = glm::vec3
+		(
+			vertice[i * stride + 5],
+			vertice[i * stride + 6],
+			vertice[i * stride + 7]
+		);
 	}
 
 	return ret;
@@ -70,6 +77,9 @@ void Mesh::Init()
 
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex,TextureCoordinates)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Normals)));
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
 }

@@ -7,6 +7,7 @@ struct Vertex
 {
 	glm::vec3 Position;
 	glm::vec2 TextureCoordinates;
+	glm::vec3 Normals;
 
 	static std::vector<Vertex> GenerateList(const float* vertice, const int numVertices);
 };

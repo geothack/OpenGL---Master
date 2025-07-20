@@ -4,6 +4,7 @@
 #include "Render/openglShader.h"
 #include "Render/openglTexture.h"
 #include "Models/Cube.h"
+#include "Models/Plane.h"
 #include "Render/Material.h"
 
 class Application
@@ -30,6 +31,10 @@ private:
 
 	Material mTexturedMaterial = Material({ .Red = 0, .Green = 0, .Blue = 0 }, { mRockTexture });
 
-	Cube mCube = Cube(Transform(glm::vec3(0.0), glm::vec3(1.0f, 0.3f, 0.5f)));
+	Cube mCube = Cube(Transform(glm::vec3(0.0), glm::vec3(1.0f, 0.3f, 0.5f),glm::vec3(0.5)));
+
+	Material mColouredMaterial = Material({ .Red = 0.89, .Green = 0.67, .Blue = 0.340 });
+
+	Plane mPlane = Plane(Transform(glm::vec3(0.0), glm::vec3(1.0f, 0.3f, 0.5f)));
 };
 

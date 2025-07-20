@@ -39,6 +39,12 @@ void Application::Update()
 
         mCube.Render(mTexturedMaterial);
 
+        mColouredMaterial.Attach();
+        mColouredMaterial.AttachColors();
+        mColouredMaterial.SetMat4("Projection", projection);
+        mColouredMaterial.SetMat4("View", view);
+        mPlane.Render(mColouredMaterial);
+
 		mGameWindow.SwapBuffers();
 	}
 
