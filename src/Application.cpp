@@ -27,13 +27,10 @@ void Application::Update()
 
         mTexturedMaterial.Attach();
 
-        //mRockTexture.Attach();
-        //glBindTextureUnit(0, mRockTexture.GetHandle());
-
-        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 view = mGameCamera.GetViewMatrix();
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
         mTexturedMaterial.SetMat4("Projection", projection);
         mTexturedMaterial.SetMat4("View", view);
 

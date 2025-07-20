@@ -6,6 +6,7 @@
 #include "Models/Cube.h"
 #include "Models/Plane.h"
 #include "Render/Material.h"
+#include "Render/Camera.h"
 
 class Application
 {
@@ -36,5 +37,7 @@ private:
 	Material mColouredMaterial = Material({ .Red = 0.89, .Green = 0.67, .Blue = 0.340 });
 
 	Plane mPlane = Plane(Transform(glm::vec3(0.0), glm::vec3(1.0f, 0.3f, 0.5f)));
+
+	Camera mGameCamera = Camera(glm::vec3(0.0,0.0,5.0));
 };
 
