@@ -1,7 +1,7 @@
 #include "Core/Core.h"
 #include "openglSprite.h"
 
-openglSprite::openglSprite(openglShader& shader) : mShader(shader)
+openglSprite::openglSprite(Material& material) : mMaterial(material)
 {
 	Init();
 }
@@ -13,7 +13,7 @@ openglSprite::~openglSprite()
 
 void openglSprite::Render(openglTexture& texture, Transform& transform)
 {
-    mShader.Attach();
+    mMaterial.Attach();
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(transform.GetPosition()));  
 
@@ -23,7 +23,7 @@ void openglSprite::Render(openglTexture& texture, Transform& transform)
 
     model = glm::scale(model, glm::vec3(transform.GetScale())); 
 
-    mShader.SetMat4("Model", model);
+    mMaterial.SetMat4("Model", model);
 
     texture.Attach();
     glBindTextureUnit(0, texture.GetHandle());

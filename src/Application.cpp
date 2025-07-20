@@ -75,12 +75,20 @@ void Application::Update()
 
         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(800), static_cast<float>(600), 0.0f, -1.0f, 1.0f);
 
-        mSpriteShader.Attach();
-        mSpriteShader.SetMat4("Projection", projection);
+        mSpriteTexturedShader.Attach();
+        mSpriteTexturedShader.SetMat4("Projection", projection);
 
         auto spriteTransform = Transform(glm::vec3(10.0f, 540.0f, 0.0f), glm::vec3(270.0f,0.0f,0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
 
         mTexturedSprite.Render(mRockTexture, spriteTransform);
+
+        mSpriteColoredShader.Attach();
+        mSpriteColoredShader.SetMat4("Projection", projection);
+        mSpriteColoredShader.AttachColors();
+
+        spriteTransform = Transform(glm::vec3(740.0f, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
+
+        mColoredSprite.Render(mRockTexture, spriteTransform);
 
         glEnable(GL_DEPTH_TEST);
 

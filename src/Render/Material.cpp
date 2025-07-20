@@ -1,15 +1,34 @@
 #include "Core/Core.h"
 #include "Material.h"
 
-Material::Material(Color color, const std::vector<openglTexture>& textures) : mColor{}, mMaterialTextures(textures)
+Material::Material(Color color, MaterialType type, const std::vector<openglTexture>& textures) : mColor{}, mMaterialTextures(textures)
 {
+	using enum MaterialType;
 	if (mMaterialTextures.size() >= 1)
 	{
-		mShader = openglShader("res/Shaders/BasicTextured.vert", "res/Shaders/BasicTextured.frag");
+		switch (type)
+		{
+		case Model3d:
+			mShader = openglShader("res/Shaders/BasicTextured.vert", "res/Shaders/BasicTextured.frag");
+			break;
+
+		case Sprite2d:
+			mShader = openglShader("res/Shaders/Sprites/SpriteTextured.vert", "res/Shaders/Sprites/SpriteTextured.frag");
+			break;
+		}
 	}
 	else
 	{
-		mShader = openglShader("res/Shaders/Basic.vert", "res/Shaders/Basic.frag");
+		switch (type)
+		{
+		case Model3d:
+			mShader = openglShader("res/Shaders/Basic.vert", "res/Shaders/Basic.frag");
+			break;
+
+		case Sprite2d:
+			mShader = openglShader("res/Shaders/Sprites/SpriteColored.vert", "res/Shaders/Sprites/SpriteColored.frag");
+			break;
+		}
 		mColor.x = color.Red;
 		mColor.y = color.Green;
 		mColor.z = color.Blue;

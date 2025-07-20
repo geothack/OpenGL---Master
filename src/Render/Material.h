@@ -11,10 +11,17 @@ struct Color
 	float Blue;
 };
 
+enum class MaterialType
+{
+	None = -1,
+	Model3d,
+	Sprite2d,
+};
+
 class Material
 {
 public:
-	Material(Color color, const std::vector<openglTexture>& textures = std::vector<openglTexture>{});
+	Material(Color color, MaterialType type, const std::vector<openglTexture>& textures = std::vector<openglTexture>{});
 
 	void Attach() const;
 

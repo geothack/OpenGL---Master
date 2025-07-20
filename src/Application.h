@@ -32,11 +32,11 @@ private:
 
 	openglTexture mRockTexture = openglTexture("Image","res/Textures/rocks.jpg");
 
-	Material mTexturedMaterial = Material({ .Red = 0, .Green = 0, .Blue = 0 }, { mRockTexture });
+	Material mTexturedMaterial = Material({ .Red = 0, .Green = 0, .Blue = 0 }, MaterialType::Model3d, { mRockTexture });
 
 	Cube mCube = Cube(Transform(glm::vec3(0.0,2.0,0.0), glm::vec3(1.0f, 0.3f, 0.5f),glm::vec3(0.5)));
 
-	Material mColouredMaterial = Material({ .Red = 0.89, .Green = 0.67, .Blue = 0.340 });
+	Material mColouredMaterial = Material({ .Red = 0.89, .Green = 0.67, .Blue = 0.340 }, MaterialType::Model3d);
 
 	Plane mPlane = Plane(Transform());
 
@@ -44,8 +44,13 @@ private:
 
 	openglUniformBuffer mUniformBuffer;
 
-	openglShader mSpriteShader = openglShader("res/Shaders/Sprites/SpriteTextured.vert", "res/Shaders/Sprites/SpriteTextured.frag");
+	Material mSpriteTexturedShader = Material({ .Red = 0.0, .Green = 0.0, .Blue = 0.0 }, MaterialType::Sprite2d, { mRockTexture });
 
-	openglSprite mTexturedSprite = openglSprite(mSpriteShader);
+	openglSprite mTexturedSprite = openglSprite(mSpriteTexturedShader);
+
+	Material mSpriteColoredShader = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.28 }, MaterialType::Sprite2d);
+
+	openglSprite mColoredSprite = openglSprite(mSpriteColoredShader);
+
 };
 
