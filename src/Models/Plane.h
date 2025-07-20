@@ -44,7 +44,7 @@ public:
         glm::mat4 model = glm::mat4(1.0);
         model = glm::translate(model, mTransform.GetPosition());
         model = glm::scale(model, mTransform.GetScale());
-        model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
+        //model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
 
         material.Attach();
         material.SetMat4("Model", model);

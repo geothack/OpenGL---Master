@@ -7,6 +7,7 @@
 #include "Models/Plane.h"
 #include "Render/Material.h"
 #include "Render/Camera.h"
+#include "Render/openglUniformBuffer.h"
 
 class Application
 {
@@ -32,12 +33,14 @@ private:
 
 	Material mTexturedMaterial = Material({ .Red = 0, .Green = 0, .Blue = 0 }, { mRockTexture });
 
-	Cube mCube = Cube(Transform(glm::vec3(0.0), glm::vec3(1.0f, 0.3f, 0.5f),glm::vec3(0.5)));
+	Cube mCube = Cube(Transform(glm::vec3(0.0,2.0,0.0), glm::vec3(1.0f, 0.3f, 0.5f),glm::vec3(0.5)));
 
 	Material mColouredMaterial = Material({ .Red = 0.89, .Green = 0.67, .Blue = 0.340 });
 
-	Plane mPlane = Plane(Transform(glm::vec3(0.0), glm::vec3(1.0f, 0.3f, 0.5f)));
+	Plane mPlane = Plane(Transform());
 
-	Camera mGameCamera = Camera(glm::vec3(0.0,0.0,5.0));
+	Camera mGameCamera = Camera(glm::vec3(0.0,0.0,12.0));
+
+	openglUniformBuffer mUniformBuffer;
 };
 

@@ -2,7 +2,13 @@
 #include "Application.h"
 #include "Input/Input.h"
 
-uint32_t VAO;
+struct CameraData
+{
+    alignas(16) glm::mat4 Projection;
+    alignas(16) glm::mat4 View;
+};
+
+CameraData cameraData;
 
 Application::Application()
 {
@@ -25,21 +31,45 @@ void Application::Update()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        if (GInput->KeyWentDown(GLFW_KEY_A))
+        {
+            mGameCamera.MoveLeft(-1.0f);
+        }
+
+        if (GInput->KeyWentDown(GLFW_KEY_D))
+        {
+            mGameCamera.MoveLeft(1.0f);
+        }
+
+        if (GInput->KeyWentDown(GLFW_KEY_W))
+        {
+            mGameCamera.MoveForward(-1.0f);
+        }
+
+        if (GInput->KeyWentDown(GLFW_KEY_S))
+        {
+            mGameCamera.MoveForward(1.0f);
+        }
+
+        if (GInput->KeyWentDown(GLFW_KEY_SPACE))
+        {
+            mGameCamera.MoveUp(1.0f);
+        }
+
         mTexturedMaterial.Attach();
 
-        glm::mat4 view = mGameCamera.GetViewMatrix();
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+        cameraData.View = mGameCamera.GetViewMatrix();
+        
+        mUniformBuffer.UpdateUBOData("CameraData", sizeof(cameraData.View), glm::value_ptr(cameraData.View), sizeof(cameraData.View));
+        
 
-        mTexturedMaterial.SetMat4("Projection", projection);
-        mTexturedMaterial.SetMat4("View", view);
 
         mCube.Render(mTexturedMaterial);
 
         mColouredMaterial.Attach();
         mColouredMaterial.AttachColors();
-        mColouredMaterial.SetMat4("Projection", projection);
-        mColouredMaterial.SetMat4("View", view);
+        
+
         mPlane.Render(mColouredMaterial);
 
 		mGameWindow.SwapBuffers();
@@ -58,7 +88,16 @@ void Application::Init()
 
 void Application::LoadMeshes()
 {
+    cameraData.View = mGameCamera.GetViewMatrix();
+    cameraData.Projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
 
+    mUniformBuffer.CreateUBO("CameraData", sizeof(CameraData), 1);
+
+    mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(cameraData.Projection), sizeof(cameraData.Projection));
+    mUniformBuffer.UpdateUBOData("CameraData", sizeof(cameraData.View), glm::value_ptr(cameraData.View), sizeof(cameraData.View));
+
+    mUniformBuffer.BindUBOToShader("CameraData", mTexturedMaterial.GetHandle(), "Camera");
+    mUniformBuffer.BindUBOToShader("CameraData", mColouredMaterial.GetHandle(), "Camera");
 }
 
 void Application::LoadShaders()

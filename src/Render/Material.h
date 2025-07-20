@@ -30,6 +30,8 @@ public:
 
 	void SetFloat(std::string_view name, float value) const;
 
+	uint32_t GetHandle() { return mShader.GetProgram(); }
+
 private:
 	openglShader mShader;
 
