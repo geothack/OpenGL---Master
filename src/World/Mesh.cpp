@@ -26,30 +26,24 @@ std::vector<Vertex> Vertex::GenerateList(const float* vertice, const int numVert
 	return ret;
 }
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures) : mVertices(vertices)
-	, mIndices(indices), mMeshTextures(textures)
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) : mVertices(vertices)
+	, mIndices(indices)
 {
 	Init();
 }
 
-void Mesh::Render(openglShader& shader)
+void Mesh::Render(Material& material)
 {
-	for (uint32_t i = 0; i < mMeshTextures.size(); i++)
-	{
-		shader.SetInt(mMeshTextures[i].GetName(), i);
-		//glActiveTexture(GL_TEXTURE0 + i);
-		mMeshTextures[i].Attach();
-		glBindTextureUnit(i, mMeshTextures[i].GetHandle());
-	}
+	material.AttachTextures();
 
 	glBindVertexArray(mVertexArrayObject);
-	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
 	glActiveTexture(GL_TEXTURE0);
 }
 
-void Mesh::Free()
+void Mesh::Free() const
 {
 	glDeleteVertexArrays(1, &mVertexArrayObject);
 	glDeleteBuffers(1, &mVertexBufferObject);

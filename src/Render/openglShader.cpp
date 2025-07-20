@@ -27,7 +27,8 @@ openglShader::openglShader(const std::filesystem::path& vertexShaderPath, const 
 
 		for (auto i = 0; i < uniformCount; i++)
 		{
-			std::string name(maxNameLength, '\O');
+											//'\O'
+			std::string name(maxNameLength, '\n');
 			::glGetActiveUniform(mProgram, i, maxNameLength, &length, &count, &type, name.data());
 
 			name.resize(length);

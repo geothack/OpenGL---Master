@@ -6,9 +6,9 @@
 
 struct Color
 {
-	double Red;
-	double Green;
-	double Blue;
+	float Red;
+	float Green;
+	float Blue;
 };
 
 class Material
@@ -16,7 +16,11 @@ class Material
 public:
 	Material(Color color, const std::vector<openglTexture>& textures = std::vector<openglTexture>{});
 
-	void Attach();
+	void Attach() const;
+
+	void AttachColors();
+
+	void AttachTextures();
 
 	void SetVec3(std::string_view name, const glm::vec3& value) const;
 

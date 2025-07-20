@@ -2,7 +2,6 @@
 class openglShader
 {
 public:
-
     openglShader() = default;
 
     openglShader(const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragShaderPath, const std::filesystem::path& geoShaderPath = "");
@@ -29,13 +28,13 @@ private:
     void LinkShader();
 
 private:
-    uint32_t mProgram;
-    uint32_t mVertex;
-    uint32_t mFragment;
-    uint32_t mGeometry;
+    uint32_t mProgram{};
+    uint32_t mVertex{};
+    uint32_t mFragment{};
+    uint32_t mGeometry{};
 
 
-    int mSuccess;
+    int mSuccess{};
     char mInfoLog[512];
 
     std::unordered_map<std::string, ::uint32_t> mUniformCache;

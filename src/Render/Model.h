@@ -1,7 +1,7 @@
 #pragma once
 
 #include "World/Mesh.h"
-#include "Render/openglShader.h"
+#include "Render/Material.h"
 
 class Model
 {
@@ -10,7 +10,7 @@ public:
 
 	void Init();
 
-	void Render(openglShader& shader);
+	void Render(Material& material);
 
 	void Free();
 

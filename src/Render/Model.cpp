@@ -9,11 +9,11 @@ void Model::Init()
 {
 }
 
-void Model::Render(openglShader& shader)
+void Model::Render(Material& material)
 {
 	for (auto& mesh : mModelMeshes)
 	{
-		mesh.Render(shader);
+		mesh.Render(material);
 	}
 }
 

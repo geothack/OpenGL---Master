@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Render/openglTexture.h"
-#include "Render/openglShader.h"
+#include "Render/Material.h"
 
 struct Vertex
 {
@@ -15,12 +15,12 @@ class Mesh
 {
 public:
 	Mesh() = default;
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures = std::vector<openglTexture>{});
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
 
-	void Render(openglShader& shader);
+	void Render(Material& material);
 
-	void Free();
+	void Free() const;
 
 private:
 	void Init();
@@ -32,7 +32,5 @@ private:
 	uint32_t mVertexArrayObject;
 	uint32_t mVertexBufferObject;
 	uint32_t mElementBufferObject;
-
-	std::vector<openglTexture> mMeshTextures;
 };
 

@@ -1,7 +1,7 @@
 #include "Core/Core.h"
 #include "Material.h"
 
-Material::Material(Color color, const std::vector<openglTexture>& textures) : mMaterialTextures(textures)
+Material::Material(Color color, const std::vector<openglTexture>& textures) : mColor{}, mMaterialTextures(textures)
 {
 	if (mMaterialTextures.size() >= 1)
 	{
@@ -17,21 +17,23 @@ Material::Material(Color color, const std::vector<openglTexture>& textures) : mM
 
 }
 
-void Material::Attach() 
+void Material::Attach() const
 {
 	mShader.Attach();
-	if (mMaterialTextures.size() >= 1)
+}
+
+void Material::AttachColors()
+{
+	mShader.SetVec3("Color", mColor);
+}
+
+void Material::AttachTextures()
+{
+	for (uint32_t i = 0; i < mMaterialTextures.size(); i++)
 	{
-		for (uint32_t i = 0; i < mMaterialTextures.size(); i++)
-		{
-			mShader.SetInt(mMaterialTextures[i].GetName(), i);
-			mMaterialTextures[i].Attach();
-			glBindTextureUnit(i, mMaterialTextures[i].GetHandle());
-		}
-	}
-	else
-	{
-		mShader.SetVec3("Color", mColor);
+		mShader.SetInt(mMaterialTextures[i].GetName(), i);
+		mMaterialTextures[i].Attach();
+		glBindTextureUnit(i, mMaterialTextures[i].GetHandle());
 	}
 }
 

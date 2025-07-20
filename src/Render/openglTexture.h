@@ -9,9 +9,9 @@ public:
 
 	void Attach();
 
-	inline uint32_t const GetHandle() { return mHandle; }
+	uint32_t GetHandle() { return mHandle; }
 
-	inline const std::string& const GetName() const { return mSamplerName; }
+	std::string& GetName() { return mSamplerName; }
 
 private:
 	uint32_t mHandle;

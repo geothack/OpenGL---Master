@@ -9,13 +9,13 @@ public:
 
 
 public:
-	inline glm::vec3& const GetPosition() { return mPosition; }
-	inline glm::vec3& const GetRotation() { return mRotation; }
-	inline glm::vec3& const GetScale() { return mScale; }
+	glm::vec3& GetPosition() { return mPosition; }
+	glm::vec3& GetRotation() { return mRotation; }
+	glm::vec3& GetScale() { return mScale; }
 
-	inline const void const SetPosition(const glm::vec3* position) { mPosition = *position; }
-	inline const void const SetRotation(const glm::vec3* rotation) { mPosition = *rotation; }
-	inline const void const SetScale(const glm::vec3* scale) { mPosition = *scale; }
+	void SetPosition(const glm::vec3& position) { mPosition = position; }
+	void SetRotation(const glm::vec3& rotation) { mPosition = rotation; }
+	void SetScale(const glm::vec3& scale) { mPosition = scale; }
 
 private:
 	glm::vec3 mPosition;

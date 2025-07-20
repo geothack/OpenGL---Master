@@ -25,7 +25,7 @@ void Application::Update()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        mBasicShader.Attach();
+        mTexturedMaterial.Attach();
 
         //mRockTexture.Attach();
         //glBindTextureUnit(0, mRockTexture.GetHandle());
@@ -34,10 +34,10 @@ void Application::Update()
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        mBasicShader.SetMat4("Projection", projection);
-        mBasicShader.SetMat4("View", view);
+        mTexturedMaterial.SetMat4("Projection", projection);
+        mTexturedMaterial.SetMat4("View", view);
 
-        mCube.Render(mBasicShader);
+        mCube.Render(mTexturedMaterial);
 
 		mGameWindow.SwapBuffers();
 	}

@@ -68,22 +68,20 @@ public:
             indices[i] = i;
         }
 
-        openglTexture rockTexture = openglTexture("Image", "res/Textures/rocks.jpg");
-
-        GetMeshes().emplace_back(Mesh(Vertex::GenerateList(vertices, 36), indices, {rockTexture}));
+        GetMeshes().emplace_back(Mesh(Vertex::GenerateList(vertices, 36), indices));
 	}
 
-    void Render(openglShader& shader)
+    void Render(Material& material)
     {
         glm::mat4 model = glm::mat4(1.0);
         model = glm::translate(model, mTransform.GetPosition());
         model = glm::scale(model, mTransform.GetScale());
         model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
 
-        shader.Attach();
-        shader.SetMat4("Model", model);
+        material.Attach();
+        material.SetMat4("Model", model);
 
-        Model::Render(shader);
+        Model::Render(material);
     }
 
 private:
