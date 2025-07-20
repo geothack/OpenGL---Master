@@ -8,6 +8,7 @@
 #include "Render/Material.h"
 #include "Render/Camera.h"
 #include "Render/openglUniformBuffer.h"
+#include "Render/openglSprite.h"
 
 class Application
 {
@@ -42,5 +43,9 @@ private:
 	Camera mGameCamera = Camera(glm::vec3(0.0,0.0,12.0));
 
 	openglUniformBuffer mUniformBuffer;
+
+	openglShader mSpriteShader = openglShader("res/Shaders/Sprites/SpriteTextured.vert", "res/Shaders/Sprites/SpriteTextured.frag");
+
+	openglSprite mTexturedSprite = openglSprite(mSpriteShader);
 };
 
