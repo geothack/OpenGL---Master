@@ -9,6 +9,7 @@
 #include "Render/Camera.h"
 #include "Render/openglUniformBuffer.h"
 #include "Render/openglSprite.h"
+#include "Render/openglText.h"
 
 class Application
 {
@@ -25,6 +26,7 @@ private:
 	void LoadTextures();
 	void LoadSounds();
 	void LoadSprites();
+	void LoadTexts();
 
 private:
 	glfwWindow mGameWindow = glfwWindow("OpenGL", 800, 600);
@@ -60,6 +62,11 @@ private:
 	Material mM4Material = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.88 }, MaterialType::AssimpModelColored);
 
 	Model mM4 = Model(Transform(glm::vec3(-5.0, 1.0f, 0.0f), glm::vec3(0.0), glm::vec3(0.01)));
+
+
+	openglShader mTextShader = openglShader("res/Shaders/Fonts/Text.vert", "res/Shaders/Fonts/Text.frag");
+
+	openglText mHelloText = openglText(mTextShader, Transform(glm::vec3(540.0f,570.0f,0.0f),glm::vec3(0.0),glm::vec3(1.0f)), "Hello World", 25, {.Red = 1.0,.Green = 1.0,.Blue = 1.0});
 
 };
 

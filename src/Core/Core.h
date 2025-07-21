@@ -5,13 +5,17 @@
 
 #include <GLFW/glfw3.h>
 
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
+
+#include <freetype/freetype.h>
 
 // Standard Library Includes
 #include <print>
@@ -26,6 +30,7 @@
 #include <memory>
 #include <format>
 #include <vector>
+#include <map>
 
 // Created Classes
 #include "Core/CoreTypes.h"

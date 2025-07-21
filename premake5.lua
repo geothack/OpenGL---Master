@@ -19,14 +19,14 @@ project "OpenGL-Master"
         "deps/glad/include", 
         "deps/glm/include",
         "deps/assimp/include",
-        
+        "deps/ttf/include",
     }
 
     libdirs 
     {
        "deps/glfw/lib", 
        "deps/assimp/lib", 
-       --"libs/openal/libs", 
+       "deps/ttf/lib", 
        --"libs/snd/libs" 
     }
 
@@ -60,6 +60,7 @@ project "OpenGL-Master"
       {
           "assimp-vc143-mtd.lib",
           "assimp-vc143-mtd.dll",
+          "freetyped.lib",
       }
 
       postbuildcommands { "{COPY} deps/glfw/lib/glfw3.dll bin/Debug" }
@@ -75,6 +76,7 @@ project "OpenGL-Master"
       {
           "assimp-vc143-mt.lib",
           "assimp-vc143-mt.dll",
+          "freetype.lib",
       }
 
     filter "files:**.c"

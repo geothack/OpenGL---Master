@@ -15,6 +15,9 @@ Application::~Application()
 
 void Application::Update()
 {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	while (!glfwWindowShouldClose(&mGameWindow.Get()))
 	{
 		mGameWindow.Events();
@@ -84,12 +87,12 @@ void Application::Update()
         auto spriteTransform = Transform(glm::vec3(10.0f, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
         mTexturedSprite.Render(mSpriteTexturedShader,spriteTransform, mRockTexture);
 
-
-
         mSpriteColoredShader.Attach();
         mSpriteColoredShader.AttachColors();
         spriteTransform = Transform(glm::vec3(740.0f, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
         mColoredSprite.Render(mSpriteColoredShader,spriteTransform);
+
+        mHelloText.RenderFont();
 
         glEnable(GL_DEPTH_TEST);
 
@@ -109,6 +112,7 @@ void Application::Init()
 	LoadShaders();
     LoadMeshes();
 	LoadSounds();
+    LoadTexts();
 }
 
 void Application::LoadMeshes()
@@ -144,4 +148,9 @@ void Application::LoadSprites()
     Cache.Insert<openglSprite>("Sprite", openglSprite{});
     mTexturedSprite.Init(mSpriteTexturedShader);
     mColoredSprite.Init(mSpriteColoredShader);
+}
+
+void Application::LoadTexts()
+{
+    mHelloText.LoadFont("res/Fonts/Hey Comic.ttf");
 }
