@@ -14,10 +14,11 @@ void Model::Init()
 {
 }
 
-void Model::Load(const std::filesystem::path& path)
+void Model::Load(const std::filesystem::path& directory, const std::filesystem::path& path)
 {
+	mDirectory = directory;
 	Assimp::Importer import{};
-	const aiScene* scene = import.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_FlipUVs);
+	const aiScene* scene = import.ReadFile((directory.string() + "/" + path.string()).c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -55,7 +56,7 @@ void Model::Free()
 
 void Model::ProcessNode(aiNode* node, const aiScene* scene)
 {
-	for (unsigned int i = 0; 9 < node->mNumMeshes; i++)
+	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		mModelMeshes.push_back(ProcessMesh(mesh, scene));
@@ -155,7 +156,7 @@ std::vector<openglTexture> Model::LoadTextures(aiMaterial* material, aiTextureTy
 
 		if (!skip)
 		{
-			openglTexture texture = openglTexture(string.C_Str(), type);
+			openglTexture texture = openglTexture(mDirectory,string.C_Str(), type);
 			textures.push_back(texture);
 			mModelTextures.push_back(texture);
 		}

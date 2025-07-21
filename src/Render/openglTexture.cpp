@@ -8,10 +8,10 @@ openglTexture::openglTexture(std::string_view samplerName, const std::filesystem
     Load(path, flip);
 }
 
-openglTexture::openglTexture(const std::filesystem::path& path, aiTextureType type) : mPath(path), mType(type)
+openglTexture::openglTexture(const std::filesystem::path& directory, const std::filesystem::path& path, aiTextureType type) : mDir(directory), mPath(path), mType(type)
 {
     glGenTextures(1, &mHandle);
-    Load(path);
+    Load((mDir.string() + "/" + path.string()).c_str());
 }
 
 void openglTexture::Attach() const

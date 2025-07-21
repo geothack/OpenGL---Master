@@ -55,7 +55,7 @@ private:
 
 	Material mTrollMaterial = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.28 }, MaterialType::AssimpModel);
 
-	Model mTroll = Model(Transform());
+	Model mTroll = Model(Transform(glm::vec3(5.0,1.0f,0.0f),glm::vec3(0.0),glm::vec3(0.01)));
 
 };
 

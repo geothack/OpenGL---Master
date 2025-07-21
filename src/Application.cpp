@@ -104,7 +104,7 @@ void Application::LoadMeshes()
     mCube.Init(mTexturedMaterial, mGameCamera);
     mPlane.Init(mColouredMaterial, mGameCamera);
 
-    mTroll.Load("res/Models/Troll/scene.gltf");
+    mTroll.Load("res/Models/Troll","scene.gltf");
 }
 
 void Application::LoadShaders()

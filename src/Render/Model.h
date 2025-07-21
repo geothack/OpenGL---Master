@@ -19,7 +19,7 @@ public:
 
 	void Init();
 
-	void Load(const std::filesystem::path& path);
+	void Load(const std::filesystem::path& directory, const std::filesystem::path& path);
 
 	void Render(Material& material);
 
@@ -43,5 +43,7 @@ private:
 	std::vector<Mesh> mModelMeshes;
 
 	std::vector<openglTexture> mModelTextures;
+
+	std::filesystem::path mDirectory;
 };
 
