@@ -16,6 +16,7 @@ enum class MaterialType
 	None = -1,
 	Model3d,
 	AssimpModel,
+	AssimpModelColored,
 	Sprite2d,
 };
 

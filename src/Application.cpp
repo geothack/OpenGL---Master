@@ -48,6 +48,11 @@ void Application::Update()
             mGameCamera.MoveUp(1.0f);
         }
 
+        if (GInput->KeyWentDown(GLFW_KEY_LEFT_SHIFT))
+        {
+            mGameCamera.MoveUp(-1.0f);
+        }
+
 
         mCube.Render(mTexturedMaterial,mGameCamera);
 
@@ -65,6 +70,13 @@ void Application::Update()
         mTrollMaterial.SetMat4("Projection",projection);
 
         mTroll.Render(mTrollMaterial);
+
+        mM4Material.Attach();
+        mM4Material.SetMat4("View", view);
+        mM4Material.SetMat4("Projection", projection);
+        mM4Material.AttachColors();
+
+        mM4.Render(mM4Material);
 
         glDisable(GL_DEPTH_TEST);
 
@@ -105,6 +117,7 @@ void Application::LoadMeshes()
     mPlane.Init(mColouredMaterial, mGameCamera);
 
     mTroll.Load("res/Models/Troll","scene.gltf");
+    mM4.Load("res/Models/M4A1","scene.gltf");
 }
 
 void Application::LoadShaders()

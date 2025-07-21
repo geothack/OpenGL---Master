@@ -28,6 +28,8 @@ glfwWindow::glfwWindow(std::string_view title, const int width, const int height
 
 	glfwSetKeyCallback(mPlatformWindow, Keyboard::KeyCallback);
 
+	glfwSwapInterval(1);
+
 	mWindowSize.Width = width;
 	mWindowSize.Height = height;
 
