@@ -56,6 +56,16 @@ void Application::Update()
         mColouredMaterial.AttachColors();
         mPlane.Render(mColouredMaterial,mGameCamera);
 
+
+        glm::mat4 view = mGameCamera.GetViewMatrix();
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
+
+        mTrollMaterial.Attach();
+        mTrollMaterial.SetMat4("View",view);
+        mTrollMaterial.SetMat4("Projection",projection);
+
+        mTroll.Render(mTrollMaterial);
+
         glDisable(GL_DEPTH_TEST);
 
 
@@ -76,6 +86,8 @@ void Application::Update()
 
     Cache.Free();
     GInput->Free();
+    mCube.Free();
+    mPlane.Free();
 }
 
 void Application::Init()
@@ -91,6 +103,8 @@ void Application::LoadMeshes()
 {
     mCube.Init(mTexturedMaterial, mGameCamera);
     mPlane.Init(mColouredMaterial, mGameCamera);
+
+    mTroll.Load("res/Models/Troll/scene.gltf");
 }
 
 void Application::LoadShaders()

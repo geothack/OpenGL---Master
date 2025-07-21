@@ -15,6 +15,7 @@ enum class MaterialType
 {
 	None = -1,
 	Model3d,
+	AssimpModel,
 	Sprite2d,
 };
 

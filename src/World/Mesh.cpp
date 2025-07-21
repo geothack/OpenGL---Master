@@ -33,15 +33,43 @@ std::vector<Vertex> Vertex::GenerateList(const float* vertice, const int numVert
 	return ret;
 }
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) : mVertices(vertices)
-	, mIndices(indices)
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures) : mVertices(vertices)
+	, mIndices(indices), mTextures(textures)
 {
 	Init();
 }
 
 void Mesh::Render(Material& material)
 {
-	material.AttachTextures();
+	if (mTextures.size() >= 1)
+	{
+		uint32_t diffuse = 0;
+		uint32_t specular = 0;
+
+		for (size_t i = 0; i < mTextures.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + i);
+
+			std::string name;
+			switch (mTextures[i].GetType())
+			{
+			case aiTextureType_DIFFUSE:
+				name = "diffuse" + std::to_string(diffuse++);
+				break;
+
+			case aiTextureType_SPECULAR:
+				name = "specular" + std::to_string(specular++);
+				break;
+			}
+
+			material.SetInt(name, i);
+			mTextures[i].Attach();
+		}
+	}
+	else
+	{
+		material.AttachTextures();
+	}
 
 	glBindVertexArray(mVertexArrayObject);
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);

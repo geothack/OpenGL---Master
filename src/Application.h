@@ -53,5 +53,9 @@ private:
 
 	openglSprite mColoredSprite = openglSprite{};
 
+	Material mTrollMaterial = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.28 }, MaterialType::AssimpModel);
+
+	Model mTroll = Model(Transform());
+
 };
 

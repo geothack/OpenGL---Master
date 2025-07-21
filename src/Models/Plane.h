@@ -3,7 +3,6 @@
 #include "Core/Core.h"
 
 #include "Render/Model.h"
-#include "World/Transform.h"
 #include "Render/Material.h"
 #include "Render/openglUniformBuffer.h"
 #include "glfwWindow.h"
@@ -12,7 +11,7 @@
 class Plane : public Model
 {
 public:
-    Plane(const Transform& transform) : mTransform(transform)
+    Plane(const Transform& transform) : Model(transform)
     {
         //Init();
     }
@@ -57,19 +56,17 @@ public:
         mCameraData.View = camera.GetViewMatrix();
         mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
 
-        glm::mat4 model = glm::mat4(1.0);
-        model = glm::translate(model, mTransform.GetPosition());
-        model = glm::scale(model, mTransform.GetScale());
-        //model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
+        //glm::mat4 model = glm::mat4(1.0);
+        //model = glm::translate(model, mTransform.GetPosition());
+        //model = glm::scale(model, mTransform.GetScale());
+        ////model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
 
-        material.Attach();
-        material.SetMat4("Model", model);
+        //material.Attach();
+        //material.SetMat4("Model", model);
 
         Model::Render(material);
     }
 
 private:
-    Transform mTransform;
-
     openglUniformBuffer mUniformBuffer{};
 };

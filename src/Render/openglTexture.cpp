@@ -5,7 +5,22 @@
 openglTexture::openglTexture(std::string_view samplerName, const std::filesystem::path& path, bool flip) : mSamplerName(samplerName.data())
 {
     glGenTextures(1, &mHandle);
+    Load(path, flip);
+}
 
+openglTexture::openglTexture(const std::filesystem::path& path, aiTextureType type) : mPath(path), mType(type)
+{
+    glGenTextures(1, &mHandle);
+    Load(path);
+}
+
+void openglTexture::Attach() const
+{
+    glBindTexture(GL_TEXTURE_2D, mHandle);
+}
+
+void openglTexture::Load(const std::filesystem::path& path, bool flip)
+{
     stbi_set_flip_vertically_on_load(flip);
 
     auto pathString = path.string();
@@ -43,9 +58,4 @@ openglTexture::openglTexture(std::string_view samplerName, const std::filesystem
         Error error(string);
         stbi_image_free(data);
     }
-}
-
-void openglTexture::Attach() const
-{
-    glBindTexture(GL_TEXTURE_2D, mHandle);
 }

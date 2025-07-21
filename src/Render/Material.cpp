@@ -12,6 +12,10 @@ Material::Material(Color color, MaterialType type, const std::vector<openglTextu
 			mShader = openglShader("res/Shaders/BasicTextured.vert", "res/Shaders/BasicTextured.frag");
 			break;
 
+		case AssimpModel:
+			mShader = openglShader("res/Shaders/Models/AssimpModel.vert", "res/Shaders/Models/AssimpModel.frag");
+			break;
+
 		case Sprite2d:
 			mShader = openglShader("res/Shaders/Sprites/SpriteTextured.vert", "res/Shaders/Sprites/SpriteTextured.frag");
 			break;
@@ -23,6 +27,10 @@ Material::Material(Color color, MaterialType type, const std::vector<openglTextu
 		{
 		case Model3d:
 			mShader = openglShader("res/Shaders/Basic.vert", "res/Shaders/Basic.frag");
+			break;
+
+		case AssimpModel:
+			mShader = openglShader("res/Shaders/Models/AssimpModel.vert", "res/Shaders/Models/AssimpModel.frag");
 			break;
 
 		case Sprite2d:
