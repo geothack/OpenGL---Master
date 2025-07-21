@@ -45,7 +45,7 @@ openglTexture::openglTexture(std::string_view samplerName, const std::filesystem
     }
 }
 
-void openglTexture::Attach()
+void openglTexture::Attach() const
 {
     glBindTexture(GL_TEXTURE_2D, mHandle);
 }

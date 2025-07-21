@@ -1,14 +1,7 @@
 #include "Core/Core.h"
 #include "Application.h"
 #include "Input/Input.h"
-
-struct CameraData
-{
-    alignas(16) glm::mat4 Projection;
-    alignas(16) glm::mat4 View;
-};
-
-CameraData cameraData;
+#include "Core/ResourceCache.h"
 
 Application::Application()
 {
@@ -22,7 +15,7 @@ Application::~Application()
 
 void Application::Update()
 {
-	while (!glfwWindowShouldClose(mGameWindow.Get()))
+	while (!glfwWindowShouldClose(&mGameWindow.Get()))
 	{
 		mGameWindow.Events();
 
@@ -55,79 +48,73 @@ void Application::Update()
             mGameCamera.MoveUp(1.0f);
         }
 
-        mTexturedMaterial.Attach();
 
-        cameraData.View = mGameCamera.GetViewMatrix();
-        
-        mUniformBuffer.UpdateUBOData("CameraData", sizeof(cameraData.View), glm::value_ptr(cameraData.View), sizeof(cameraData.View));
-        
+        mCube.Render(mTexturedMaterial,mGameCamera);
 
-
-        mCube.Render(mTexturedMaterial);
 
         mColouredMaterial.Attach();
         mColouredMaterial.AttachColors();
-        
-
-        mPlane.Render(mColouredMaterial);
+        mPlane.Render(mColouredMaterial,mGameCamera);
 
         glDisable(GL_DEPTH_TEST);
 
-        glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(800), static_cast<float>(600), 0.0f, -1.0f, 1.0f);
 
-        mSpriteTexturedShader.Attach();
-        mSpriteTexturedShader.SetMat4("Projection", projection);
+        auto spriteTransform = Transform(glm::vec3(10.0f, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
+        mTexturedSprite.Render(mSpriteTexturedShader,spriteTransform, mRockTexture);
 
-        auto spriteTransform = Transform(glm::vec3(10.0f, 540.0f, 0.0f), glm::vec3(270.0f,0.0f,0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
 
-        mTexturedSprite.Render(mRockTexture, spriteTransform);
 
         mSpriteColoredShader.Attach();
-        mSpriteColoredShader.SetMat4("Projection", projection);
         mSpriteColoredShader.AttachColors();
-
         spriteTransform = Transform(glm::vec3(740.0f, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
-
-        mColoredSprite.Render(mRockTexture, spriteTransform);
+        mColoredSprite.Render(mSpriteColoredShader,spriteTransform);
 
         glEnable(GL_DEPTH_TEST);
 
 		mGameWindow.SwapBuffers();
 	}
 
+    Cache.Free();
     GInput->Free();
 }
 
 void Application::Init()
 {
-    LoadMeshes();
+    LoadSprites();
+    LoadTextures();
 	LoadShaders();
-	LoadTextures();
+    LoadMeshes();
 	LoadSounds();
 }
 
 void Application::LoadMeshes()
 {
-    cameraData.View = mGameCamera.GetViewMatrix();
-    cameraData.Projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
-
-    mUniformBuffer.CreateUBO("CameraData", sizeof(CameraData), 1);
-
-    mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(cameraData.Projection), sizeof(cameraData.Projection));
-    mUniformBuffer.UpdateUBOData("CameraData", sizeof(cameraData.View), glm::value_ptr(cameraData.View), sizeof(cameraData.View));
-
-    mUniformBuffer.BindUBOToShader("CameraData", mTexturedMaterial.GetHandle(), "Camera");
-    mUniformBuffer.BindUBOToShader("CameraData", mColouredMaterial.GetHandle(), "Camera");
+    mCube.Init(mTexturedMaterial, mGameCamera);
+    mPlane.Init(mColouredMaterial, mGameCamera);
 }
 
 void Application::LoadShaders()
 {
+    // 3D
+    Cache.Insert<Material>("Textured", Material({ .Red = 0.0, .Green = 0.0, .Blue = 0.0 }, MaterialType::Model3d, { Cache.Find<openglTexture>("Rock") }));
+    Cache.Insert<Material>("Colored", Material({ .Red = 0.89, .Green = 0.67, .Blue = 0.340 }, MaterialType::Model3d));
+    // 2D
+    Cache.Insert<Material>("SpriteTextured", Material({ .Red = 0.0, .Green = 0.0, .Blue = 0.0 }, MaterialType::Sprite2d, { Cache.Find<openglTexture>("Rock") }));
+    Cache.Insert<Material>("SpriteColored", Material({ .Red = 0.0, .Green = 0.0, .Blue = 0.0 }, MaterialType::Sprite2d));
 }
 
 void Application::LoadTextures()
 {
+    Cache.Insert<openglTexture>("Rock", openglTexture("Image", "res/Textures/rocks.jpg"));
 }
 
 void Application::LoadSounds()
 {
+}
+
+void Application::LoadSprites()
+{
+    Cache.Insert<openglSprite>("Sprite", openglSprite{});
+    mTexturedSprite.Init(mSpriteTexturedShader);
+    mColoredSprite.Init(mSpriteColoredShader);
 }

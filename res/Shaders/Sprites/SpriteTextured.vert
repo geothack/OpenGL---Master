@@ -3,8 +3,12 @@ layout (location = 0) in vec4 vertex;
 
 out vec2 TexCoords;
 
+layout (std140, binding = 1) uniform SpriteCamera
+{
+    mat4 Projection;
+};
+
 uniform mat4 Model;
-uniform mat4 Projection;
 
 void main()
 {

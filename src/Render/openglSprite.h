@@ -3,19 +3,28 @@
 #include "Render/Material.h"
 #include "Render/openglTexture.h"
 #include "World/Transform.h"
+#include "openglUniformBuffer.h"
 
 class openglSprite
 {
 public:
     openglSprite() = default;
-    openglSprite(Material& material);
     ~openglSprite();
 
-    void Render(openglTexture& texture, Transform& transform);
+    void Render(Material& material, Transform& transform, const openglTexture& texture = openglTexture{});
+
+    void Init(Material& material);
+
 private:
-    Material mMaterial;
     uint32_t mVertexArrayObject;
 
-    void Init();
+    struct SpriteCamera
+    {
+        alignas(16) glm::mat4 Projection;
+    };
+
+    SpriteCamera mSpriteCamera;
+
+    openglUniformBuffer mUniformBuffer{};
 };
 

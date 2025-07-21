@@ -1,7 +1,7 @@
 #include "Core/Core.h"
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+Camera::Camera(const glm::vec3& position, const glm::vec3& up, const float yaw, const float pitch)
     : mFront(glm::vec3(0.0f, 0.0f, -1.0f)), mMovementSpeed(2.5f), mMouseSensitivity(0.1f), mZoom(45.0f)
 {
     mPosition = position;

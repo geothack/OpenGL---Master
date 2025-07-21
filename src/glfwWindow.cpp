@@ -28,6 +28,9 @@ glfwWindow::glfwWindow(std::string_view title, const int width, const int height
 
 	glfwSetKeyCallback(mPlatformWindow, Keyboard::KeyCallback);
 
+	mWindowSize.Width = width;
+	mWindowSize.Height = height;
+
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(DebugLog, nullptr);
 }

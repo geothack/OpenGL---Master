@@ -7,14 +7,14 @@ public:
 	openglTexture() = default;
 	openglTexture(std::string_view samplerName, const std::filesystem::path& path, bool flip = false);
 
-	void Attach();
+	void Attach() const;
 
-	uint32_t GetHandle() { return mHandle; }
+	uint32_t GetHandle() const { return mHandle; }
 
 	std::string& GetName() { return mSamplerName; }
 
 private:
-	uint32_t mHandle;
+	uint32_t mHandle = 0;
 
 	std::string mSamplerName = "";
 

@@ -24,6 +24,7 @@ private:
 	void LoadShaders();
 	void LoadTextures();
 	void LoadSounds();
+	void LoadSprites();
 
 private:
 	glfwWindow mGameWindow = glfwWindow("OpenGL", 800, 600);
@@ -46,11 +47,11 @@ private:
 
 	Material mSpriteTexturedShader = Material({ .Red = 0.0, .Green = 0.0, .Blue = 0.0 }, MaterialType::Sprite2d, { mRockTexture });
 
-	openglSprite mTexturedSprite = openglSprite(mSpriteTexturedShader);
+	openglSprite mTexturedSprite = openglSprite{};
 
 	Material mSpriteColoredShader = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.28 }, MaterialType::Sprite2d);
 
-	openglSprite mColoredSprite = openglSprite(mSpriteColoredShader);
+	openglSprite mColoredSprite = openglSprite{};
 
 };
 

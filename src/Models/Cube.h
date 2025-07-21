@@ -4,6 +4,9 @@
 
 #include "Render/Model.h"
 #include "World/Transform.h"
+#include "Render/openglUniformBuffer.h"
+#include "glfwWindow.h"
+#include "Render/Camera.h"
 
 class Cube : public Model
 {
@@ -11,11 +14,11 @@ public:
 
 	Cube(const Transform& transform) : mTransform(transform)
 	{
-        Init();
+        //Init();
 	}
 
 
-	void Init()
+	void Init(Material& material, Camera& camera)
 	{
         float vertices[] =
         {
@@ -70,10 +73,23 @@ public:
         }
 
         GetMeshes().emplace_back(Mesh(Vertex::GenerateList(vertices, 36), indices));
+
+        mCameraData.View = camera.GetViewMatrix();
+        mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
+
+        mUniformBuffer.CreateUBO("CameraData", sizeof(CameraData), 0);
+
+        mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(mCameraData.Projection), sizeof(mCameraData.Projection));
+        mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
+
+        mUniformBuffer.BindUBOToShader("CameraData", material.GetHandle(), "Camera");
 	}
 
-    void Render(Material& material)
+    void Render(Material& material, Camera& camera)
     {
+        mCameraData.View = camera.GetViewMatrix();
+        mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
+
         glm::mat4 model = glm::mat4(1.0);
         model = glm::translate(model, mTransform.GetPosition());
         model = glm::scale(model, mTransform.GetScale());
@@ -87,4 +103,6 @@ public:
 
 private:
     Transform mTransform;
+
+    openglUniformBuffer mUniformBuffer{};
 };
