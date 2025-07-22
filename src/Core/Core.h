@@ -17,6 +17,8 @@
 
 #include <freetype/freetype.h>
 
+#include <box2d/box2d.h>
+
 // Standard Library Includes
 #include <print>
 #include <stacktrace>

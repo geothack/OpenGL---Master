@@ -20,6 +20,7 @@ project "OpenGL-Master"
         "deps/glm/include",
         "deps/assimp/include",
         "deps/ttf/include",
+        "deps/box2d/include",
     }
 
     libdirs 
@@ -27,7 +28,7 @@ project "OpenGL-Master"
        "deps/glfw/lib", 
        "deps/assimp/lib", 
        "deps/ttf/lib", 
-       --"libs/snd/libs" 
+       "deps/box2d/lib",
     }
 
     links 
@@ -61,6 +62,7 @@ project "OpenGL-Master"
           "assimp-vc143-mtd.lib",
           "assimp-vc143-mtd.dll",
           "freetyped.lib",
+          "box2dd.lib",
       }
 
       postbuildcommands { "{COPY} deps/glfw/lib/glfw3.dll bin/Debug" }
@@ -77,6 +79,7 @@ project "OpenGL-Master"
           "assimp-vc143-mt.lib",
           "assimp-vc143-mt.dll",
           "freetype.lib",
+          "rbox2d.lib",
       }
 
     filter "files:**.c"
