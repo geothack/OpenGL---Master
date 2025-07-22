@@ -13,6 +13,17 @@ Application::~Application()
 {
 }
 
+void Application::FixedUpdate()
+{
+    mTimeStep += mDeltaTime * 150.0f;
+    while (mTimeStep >= mGameWindow.GetVideoMode()->refreshRate)
+    {
+        mTimeStep -= mGameWindow.GetVideoMode()->refreshRate;
+
+        // Run entity fixed update here
+    }
+}
+
 void Application::Update()
 {
     glEnable(GL_BLEND);
@@ -21,6 +32,12 @@ void Application::Update()
 	while (!glfwWindowShouldClose(&mGameWindow.Get()))
 	{
 		mGameWindow.Events();
+
+        double currentTime = glfwGetTime();
+        mDeltaTime = currentTime - mLastFrame;
+        mLastFrame = currentTime;
+
+        FixedUpdate();
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -107,6 +124,7 @@ void Application::Update()
     GInput->Free();
     mCube.Free();
     mPlane.Free();
+    mSphere.Free();
 }
 
 void Application::Init()

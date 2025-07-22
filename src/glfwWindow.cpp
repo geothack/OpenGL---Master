@@ -26,6 +26,20 @@ glfwWindow::glfwWindow(std::string_view title, const int width, const int height
 		Error error("Failed to initialize glad");
 	}
 
+	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	if (!monitor)
+	{
+		Error error("Failed to get primary monitor");
+		glfwTerminate();
+	}
+
+	mVideoMode = glfwGetVideoMode(monitor);
+	if (!mVideoMode)
+	{
+		Error error("Failed to get video mode");
+		glfwTerminate();
+	}
+
 	glfwSetKeyCallback(mPlatformWindow, Keyboard::KeyCallback);
 
 	glfwSwapInterval(1);

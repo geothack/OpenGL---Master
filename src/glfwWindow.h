@@ -26,6 +26,8 @@ public:
 
 	GLFWwindow& const Get() const { return *mPlatformWindow; }
 
+	const GLFWvidmode* GetVideoMode() const { return mVideoMode; }
+
 	static Size GetSize() { return mWindowSize; }
 
 private:
@@ -33,6 +35,7 @@ private:
 
 private:
 	GLFWwindow* mPlatformWindow;
+	const GLFWvidmode* mVideoMode;
 
 	inline static Size mWindowSize = Size{};
 

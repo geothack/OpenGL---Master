@@ -19,6 +19,7 @@ public:
 	~Application();
 
 private:
+	void FixedUpdate();
 	void Update();
 	void Init();
 	
@@ -31,6 +32,10 @@ private:
 
 private:
 	glfwWindow mGameWindow = glfwWindow("OpenGL", 800, 600);
+
+	double mDeltaTime = 0.0f;
+	double mLastFrame = 0.0f;
+	double mTimeStep = 0.0f;
 
 	//openglShader mBasicShader = openglShader("res/Shaders/BasicTextured.vert", "res/Shaders/BasicTextured.frag");
 
