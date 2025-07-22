@@ -64,6 +64,10 @@ void Application::Update()
         mColouredMaterial.AttachColors();
         mPlane.Render(mColouredMaterial,mGameCamera);
 
+        mColouredMaterial2.Attach();
+        mColouredMaterial2.AttachColors();
+        mSphere.Render(mColouredMaterial2, mGameCamera);
+
 
         glm::mat4 view = mGameCamera.GetViewMatrix();
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
@@ -119,6 +123,7 @@ void Application::LoadMeshes()
 {
     mCube.Init(mTexturedMaterial, mGameCamera);
     mPlane.Init(mColouredMaterial, mGameCamera);
+    mSphere.Init(mColouredMaterial2, mGameCamera);
 
     mTroll.Load("res/Models/Troll","scene.gltf");
     mM4.Load("res/Models/M4A1","scene.gltf");
