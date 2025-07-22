@@ -21,6 +21,10 @@ void openglSprite::Render(Material& material, Transform& transform, const opengl
 
     material.SetMat4("Model", model);
 
+    mSpriteCamera.Projection = glm::ortho(0.0f, static_cast<float>(glfwWindow::GetSize().Width), static_cast<float>(glfwWindow::GetSize().Height), 0.0f, -1.0f, 1.0f);
+
+    mUniformBuffer.UpdateUBOData("SpriteCamera", 0, glm::value_ptr(mSpriteCamera.Projection), sizeof(mSpriteCamera.Projection));
+
     if (texture.GetHandle() != 0)
     {
         texture.Attach();

@@ -2,8 +2,8 @@
 
 struct Size
 {
-	uint16_t Width;
-	uint16_t Height;
+	int Width;
+	int Height;
 };
 
 
@@ -21,7 +21,6 @@ public:
 
 	void Events() const;
 
-
 	void SwapBuffers() const;
 
 	GLFWwindow& const Get() const { return *mPlatformWindow; }
@@ -31,6 +30,7 @@ public:
 	static Size GetSize() { return mWindowSize; }
 
 private:
+	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	static void APIENTRY DebugLog(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam);
 
 private:

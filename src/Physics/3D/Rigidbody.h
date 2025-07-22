@@ -23,6 +23,10 @@ public:
 
     void HandleCollision(const Rigidbody* inst, const glm::vec3& norm);
 
+    Transform& GetTransform() { return mTransform; }
+
+    glm::vec3& GetAcceleration() { return mAcceleration; }
+
 private:
     unsigned char mState;
 

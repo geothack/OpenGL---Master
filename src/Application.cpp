@@ -74,16 +74,16 @@ void Application::Update()
         }
 
 
-        mCube.Render(mTexturedMaterial,mGameCamera);
+        mCube.Render(mTexturedMaterial,mGameCamera, mDeltaTime);
 
 
         mColouredMaterial.Attach();
         mColouredMaterial.AttachColors();
-        mPlane.Render(mColouredMaterial,mGameCamera);
+        mPlane.Render(mColouredMaterial,mGameCamera, mDeltaTime);
 
         mColouredMaterial2.Attach();
         mColouredMaterial2.AttachColors();
-        mSphere.Render(mColouredMaterial2, mGameCamera);
+        mSphere.Render(mColouredMaterial2, mGameCamera,mDeltaTime);
 
 
         glm::mat4 view = mGameCamera.GetViewMatrix();
@@ -93,14 +93,14 @@ void Application::Update()
         mTrollMaterial.SetMat4("View",view);
         mTrollMaterial.SetMat4("Projection",projection);
 
-        mTroll.Render(mTrollMaterial);
+        mTroll.Render(mTrollMaterial,mDeltaTime);
 
         mM4Material.Attach();
         mM4Material.SetMat4("View", view);
         mM4Material.SetMat4("Projection", projection);
         mM4Material.AttachColors();
 
-        mM4.Render(mM4Material);
+        mM4.Render(mM4Material,mDeltaTime);
 
         glDisable(GL_DEPTH_TEST);
 
@@ -110,7 +110,7 @@ void Application::Update()
 
         mSpriteColoredShader.Attach();
         mSpriteColoredShader.AttachColors();
-        spriteTransform = Transform(glm::vec3(740.0f, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
+        spriteTransform = Transform(glm::vec3(glfwWindow::GetSize().Width - 60, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
         mColoredSprite.Render(mSpriteColoredShader,spriteTransform);
 
         mHelloText.RenderFont();

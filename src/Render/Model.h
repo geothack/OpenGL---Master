@@ -4,6 +4,7 @@
 #include "Render/Material.h"
 #include "Render/openglTexture.h"
 #include "World/Transform.h"
+#include "Physics/3D/Rigidbody.h"
 
 struct CameraData
 {
@@ -21,12 +22,14 @@ public:
 
 	void Load(const std::filesystem::path& directory, const std::filesystem::path& path);
 
-	void Render(Material& material);
+	void Render(Material& material, const float delta);
 
 	void Free();
 
 	std::vector<Mesh>& GetMeshes() { return mModelMeshes; }
 	std::vector<openglTexture>& GetTextures() { return mModelTextures; }
+
+	Rigidbody& GetRigidbody() { return mRigidbody; }
 
 protected:
 	void ProcessNode(aiNode* node, const aiScene* scene);
@@ -38,6 +41,8 @@ protected:
 protected:
 	CameraData mCameraData;
 	Transform mTransform;
+	Rigidbody mRigidbody;
+
 
 private:
 	std::vector<Mesh> mModelMeshes;

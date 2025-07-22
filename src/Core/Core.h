@@ -35,6 +35,8 @@
 // Created Classes
 #include "Core/CoreTypes.h"
 #include "Core/Log.h"
+#include "Physics/3D/Environment.h"
+#include "Models/ModelArray.h"
 
 // Third Party Class
 #include "stb_image.h"

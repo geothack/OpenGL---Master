@@ -8,6 +8,8 @@ Model::Model()
 
 Model::Model(const Transform& transform) : mTransform(transform)
 {
+	mRigidbody = Rigidbody("rb", Transform(transform));
+	//mRigidbody.GetAcceleration() = Environment::Gravity;
 }
 
 void Model::Init()
@@ -29,10 +31,13 @@ void Model::Load(const std::filesystem::path& directory, const std::filesystem::
 	ProcessNode(scene->mRootNode, scene);
 }
 
-void Model::Render(Material& material)
+void Model::Render(Material& material, const float delta)
 {
+	mRigidbody.Update(delta);
+
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, mTransform.GetPosition());
+	//model = glm::translate(model, mTransform.GetPosition());
+	model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
 	model = glm::scale(model, mTransform.GetScale());
 
 	if (mTransform.GetRotation() != glm::vec3(0.0))

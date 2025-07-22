@@ -12,15 +12,15 @@ void Rigidbody::Update(float dt)
     mTransform.SetPosition(mTransform.GetPosition() += mVelocity * dt + 0.5f * mAcceleration * (dt * dt));
     mVelocity += mAcceleration * dt;
 
-    glm::mat4 rotMat = glm::toMat4(glm::quat(mTransform.GetRotation()));
-
-    mModel = glm::translate(glm::mat4(1.0f), mTransform.GetPosition());
-    mModel = mModel * rotMat; 
-    mModel = glm::scale(mModel, mTransform.GetScale());
-
-    mNormalModel = glm::transpose(glm::inverse(glm::mat3(mModel)));
-
-    mLastCollision += dt;
+    //glm::mat4 rotMat = glm::toMat4(glm::quat(mTransform.GetRotation()));
+    //
+    //mModel = glm::translate(glm::mat4(1.0f), mTransform.GetPosition());
+    //mModel = mModel * rotMat; 
+    //mModel = glm::scale(mModel, mTransform.GetScale());
+    //
+    //mNormalModel = glm::transpose(glm::inverse(glm::mat3(mModel)));
+    //
+    //mLastCollision += dt;
 }
 
 void Rigidbody::ApplyForce(const glm::vec3& force)

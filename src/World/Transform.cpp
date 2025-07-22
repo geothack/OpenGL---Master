@@ -5,6 +5,10 @@ Transform::Transform(const glm::vec3& position, const glm::vec3& rotation, const
 {
 }
 
+Transform::Transform(const Transform& transform) : mPosition(transform.mPosition), mRotation(transform.mRotation), mScale(transform.mScale)
+{
+}
+
 Transform::~Transform()
 {
 }

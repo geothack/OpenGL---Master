@@ -41,6 +41,7 @@ glfwWindow::glfwWindow(std::string_view title, const int width, const int height
 	}
 
 	glfwSetKeyCallback(mPlatformWindow, Keyboard::KeyCallback);
+	glfwSetFramebufferSizeCallback(mPlatformWindow, FramebufferSizeCallback);
 
 	glfwSwapInterval(1);
 
@@ -70,6 +71,13 @@ void glfwWindow::Events() const
 void glfwWindow::SwapBuffers() const
 {
 	glfwSwapBuffers(mPlatformWindow);
+}
+
+void glfwWindow::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+{
+	mWindowSize.Width = width;
+	mWindowSize.Height = height;
+	glViewport(0, 0, width, height);
 }
 
 void glfwWindow::DebugLog(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam)
