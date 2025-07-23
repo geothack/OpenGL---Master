@@ -73,6 +73,11 @@ void Application::Update()
             mGameCamera.MoveUp(-1.0f);
         }
 
+        if (GInput->KeyWentDown(GLFW_KEY_B))
+        {
+            mBox.GetTransforms().push_back(Transform(glm::vec3(mBox.GetTransforms().size() * 1.0f), glm::vec3(0.0f), glm::vec3(glm::vec3(mBox.GetTransforms().size() * 0.5f))));
+        }
+
 
         mCube.Render(mTexturedMaterial,mGameCamera, mDeltaTime);
 
@@ -102,6 +107,15 @@ void Application::Update()
 
         mM4.Render(mM4Material,mDeltaTime);
 
+        if (mBox.GetTransforms().size() > 0)
+        {
+            mBoxShader.Attach();
+            mBoxShader.SetMat4("View", view);
+            mBoxShader.SetMat4("Projection", projection);
+
+            mBox.Render(mBoxShader);
+        }
+
         glDisable(GL_DEPTH_TEST);
 
 
@@ -120,6 +134,7 @@ void Application::Update()
 		mGameWindow.SwapBuffers();
 	}
 
+    mBox.Free();
     Cache.Free();
     GInput->Free();
     mCube.Free();
@@ -142,6 +157,7 @@ void Application::LoadMeshes()
     mCube.Init(mTexturedMaterial, mGameCamera);
     mPlane.Init(mColouredMaterial, mGameCamera);
     mSphere.Init(mColouredMaterial2, mGameCamera);
+    mBox.Init();
 
     mTroll.Load("res/Models/Troll","scene.gltf");
     mM4.Load("res/Models/M4A1","scene.gltf");

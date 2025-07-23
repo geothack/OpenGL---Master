@@ -48,7 +48,7 @@ public:
 		}
 	}
 
-	void Render(Material& material, float delta, bool setLists = true)
+	void Render(Material& material, float delta, bool setLists = true, bool render = true)
 	{
 		if (setLists)
 		{
@@ -79,17 +79,20 @@ public:
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 
-		for (unsigned int i = 0, length = mModel.GetMeshes().size(); i < length; i++)
+		if (render)
 		{
-			glBindVertexArray(mModel.GetMeshes()[i].GetVertexArray());
+			for (unsigned int i = 0, length = mModel.GetMeshes().size(); i < length; i++)
+			{
+				glBindVertexArray(mModel.GetMeshes()[i].GetVertexArray());
 
-			glDrawElementsInstanced(GL_TRIANGLES, mModel.GetMeshes()[i].GetIndices().size(), GL_UNSIGNED_INT, 0, size);
+				glDrawElementsInstanced(GL_TRIANGLES, mModel.GetMeshes()[i].GetIndices().size(), GL_UNSIGNED_INT, 0, size);
 
-			glBindVertexArray(0);
+				glBindVertexArray(0);
+			}
 		}
 	}
 
-	void Render(openglShader& shader, float delta, bool setLists = true)
+	void Render(openglShader& shader, float delta, bool setLists = true, bool render = true)
 	{
 		if (setLists)
 		{
@@ -120,13 +123,16 @@ public:
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 
-		for (unsigned int i = 0, length = mModel.GetMeshes().size(); i < length; i++)
+		if (render)
 		{
-			glBindVertexArray(mModel.GetMeshes()[i].GetVertexArray());
+			for (unsigned int i = 0, length = mModel.GetMeshes().size(); i < length; i++)
+			{
+				glBindVertexArray(mModel.GetMeshes()[i].GetVertexArray());
 
-			glDrawElementsInstanced(GL_TRIANGLES, mModel.GetMeshes()[i].GetIndices().size(), GL_UNSIGNED_INT, 0, size);
+				glDrawElementsInstanced(GL_TRIANGLES, mModel.GetMeshes()[i].GetIndices().size(), GL_UNSIGNED_INT, 0, size);
 
-			glBindVertexArray(0);
+				glBindVertexArray(0);
+			}
 		}
 	}
 

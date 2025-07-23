@@ -11,6 +11,7 @@
 #include "Render/openglSprite.h"
 #include "Render/openglText.h"
 #include "Models/Sphere.h"
+#include "Models/Box.h"
 
 class Application
 {
@@ -80,6 +81,9 @@ private:
 	Sphere mSphere = Sphere(Transform(glm::vec3(-2.5,2.0,0.0),glm::vec3(0.0),glm::vec3(0.05)));
 
 	openglShader instancedShader = openglShader("res/Shaders/Models/ModelInstanced.vert", "res/Shaders/Models/ModelInstanced.frag");
+	openglShader mBoxShader = openglShader("res/Shaders/Models/Box.vert", "res/Shaders/Models/Box.frag");
+
+	Box mBox{};
 
 };
 
