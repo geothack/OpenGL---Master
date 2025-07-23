@@ -55,6 +55,30 @@ void Model::Render(Material& material, const float delta)
 	}
 }
 
+void Model::Render(openglShader& shader, const float delta)
+{
+	mRigidbody.Update(delta);
+
+	glm::mat4 model = glm::mat4(1.0f);
+	//model = glm::translate(model, mTransform.GetPosition());
+	model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
+	model = glm::scale(model, mTransform.GetScale());
+
+	if (mTransform.GetRotation() != glm::vec3(0.0))
+	{
+		model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
+	}
+
+	shader.Attach();
+	shader.SetMat4("Model", model);
+
+
+	for (auto& mesh : mModelMeshes)
+	{
+		mesh.Render(shader);
+	}
+}
+
 void Model::Free()
 {
 	for (auto& mesh : mModelMeshes)

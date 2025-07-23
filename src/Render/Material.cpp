@@ -40,6 +40,10 @@ Material::Material(Color color, MaterialType type, const std::vector<openglTextu
 		case Sprite2d:
 			mShader = openglShader("res/Shaders/Sprites/SpriteColored.vert", "res/Shaders/Sprites/SpriteColored.frag");
 			break;
+
+		case Text:
+			mShader = openglShader("res/Shaders/Fonts/Text.vert", "res/Shaders/Fonts/Text.frag");
+			break;
 		}
 		mColor.x = color.Red;
 		mColor.y = color.Green;

@@ -16,7 +16,7 @@ class openglText
 {
 public:
 	openglText() = default;
-	openglText(const openglShader& shader, const Transform& transform, std::string_view message, const int height, Color color);
+	openglText(const Material& material, const Transform& transform, std::string_view message, const int height);
 	~openglText() = default;
 
 	void LoadFont(const std::filesystem::path& path);
@@ -30,12 +30,10 @@ public:
 	uint32_t GetVertexBuffer() { return mVertexBufferOject; }
 
 private:
-	openglShader mShader;
+	Material mMaterial;
 	Transform mTransform;
 
 	glm::mat4 mWorld;
-
-	glm::vec3 mColor;
 
 	uint32_t mVertexArrayObject;
 	uint32_t mVertexBufferOject;

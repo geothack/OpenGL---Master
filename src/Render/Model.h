@@ -23,6 +23,7 @@ public:
 	void Load(const std::filesystem::path& directory, const std::filesystem::path& path);
 
 	void Render(Material& material, const float delta);
+	void Render(openglShader& shader, const float delta);
 
 	void Free();
 

@@ -2,12 +2,10 @@
 #include "openglText.h"
 #include "Core/Error.h"
 
-openglText::openglText(const openglShader& shader, const Transform& transform, std::string_view message, const int height, Color color) : mShader(shader), mTransform(transform), Message(message.data())
+openglText::openglText(const Material& material, const Transform& transform, std::string_view message, const int height) : mMaterial(material), mTransform(transform), Message(message.data())
 	, mHeight(height)
 {
-	mColor.x = color.Red;
-	mColor.y = color.Green;
-	mColor.z = color.Blue;
+
 }
 
 void openglText::LoadFont(const std::filesystem::path& path)
@@ -100,14 +98,14 @@ void openglText::LoadFont(const std::filesystem::path& path)
 void openglText::RenderFont()
 {
     auto copyX = mTransform.GetPosition().x;
-    mShader.Attach();
-    mShader.SetVec3("textColor", mColor);
+    mMaterial.Attach();
+    mMaterial.AttachColors();
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(mVertexArrayObject);
 
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(800), 0.0f, static_cast<float>(600));
-    mShader.Attach();
-    mShader.SetMat4("projection", projection);
+    mMaterial.Attach();
+    mMaterial.SetMat4("projection", projection);
 
     std::string::const_iterator c;
     for (c = Message.begin(); c != Message.end(); c++)
@@ -129,7 +127,7 @@ void openglText::RenderFont()
             float ypos = mTransform.GetPosition().y - (ch.Size.y - ch.Bearing.y) * mTransform.GetScale().x;
 
             mWorld = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(ch.Size.x * mTransform.GetScale().x, ch.Size.y * mTransform.GetScale().x, 0));
-            mShader.SetMat4("transform", mWorld);
+            mMaterial.SetMat4("transform", mWorld);
 
             glBindTexture(GL_TEXTURE_2D, ch.TextureID);
             glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferOject);

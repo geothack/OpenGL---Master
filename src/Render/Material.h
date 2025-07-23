@@ -18,6 +18,7 @@ enum class MaterialType
 	AssimpModel,
 	AssimpModelColored,
 	Sprite2d,
+	Text,
 };
 
 class Material

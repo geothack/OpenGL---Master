@@ -20,6 +20,7 @@ public:
 
 
 	void Render(Material& material);
+	void Render(openglShader& shader);
 
 	void Free() const;
 

@@ -78,6 +78,45 @@ void Mesh::Render(Material& material)
 	glActiveTexture(GL_TEXTURE0);
 }
 
+void Mesh::Render(openglShader& shader)
+{
+	if (mTextures.size() >= 1)
+	{
+		uint32_t diffuse = 0;
+		uint32_t specular = 0;
+
+		for (size_t i = 0; i < mTextures.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + i);
+
+			std::string name;
+			switch (mTextures[i].GetType())
+			{
+			case aiTextureType_DIFFUSE:
+				name = "diffuse" + std::to_string(diffuse++);
+				break;
+
+			case aiTextureType_SPECULAR:
+				name = "specular" + std::to_string(specular++);
+				break;
+			}
+
+			shader.SetInt(name, i);
+			mTextures[i].Attach();
+		}
+	}
+	else
+	{
+		//shader.AttachTextures();
+	}
+
+	glBindVertexArray(mVertexArrayObject);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+
+	glActiveTexture(GL_TEXTURE0);
+}
+
 void Mesh::Free() const
 {
 	glDeleteVertexArrays(1, &mVertexArrayObject);
