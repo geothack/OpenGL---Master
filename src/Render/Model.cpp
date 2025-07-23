@@ -31,7 +31,7 @@ void Model::Load(const std::filesystem::path& directory, const std::filesystem::
 	ProcessNode(scene->mRootNode, scene);
 }
 
-void Model::Render(Material& material, const float delta, bool setModel, bool render)
+void Model::Render(Material& material, Box& box, const float delta, bool setModel, bool render)
 {
 	mRigidbody.Update(delta);
 
@@ -54,11 +54,11 @@ void Model::Render(Material& material, const float delta, bool setModel, bool re
 
 	for (auto& mesh : mModelMeshes)
 	{
-		mesh.Render(material,render);
+		mesh.Render(material,box,mTransform.GetPosition(),mTransform.GetScale(), render);
 	}
 }
 
-void Model::Render(openglShader& shader, const float delta, bool setModel, bool render)
+void Model::Render(openglShader& shader, Box& box, const float delta, bool setModel, bool render)
 {
 	mRigidbody.Update(delta);
 
@@ -81,7 +81,7 @@ void Model::Render(openglShader& shader, const float delta, bool setModel, bool 
 
 	for (auto& mesh : mModelMeshes)
 	{
-		mesh.Render(shader,render);
+		mesh.Render(shader, box, mRigidbody.GetTransform().GetPosition(),mRigidbody.GetTransform().GetScale(), render);
 	}
 }
 
@@ -115,8 +115,8 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
 	BoundingRegion region{ mBoundsType };
 
-	glm::vec3 min{(float)(~0)}; // Using bitwise complenent of float which equals the max value of a float
-	glm::vec3 max{-(float)(~0)};
+	glm::vec3 min((float)(~0)); // Using bitwise complenent of float which equals the max value of a float
+	glm::vec3 max(-(float)(~0));
 
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
@@ -131,12 +131,12 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
 		for (auto j = 0; j < 3; j++)
 		{
-			if (vertex.Position[i] < min[j])
+			if (vertex.Position[j] < min[j])
 			{
 				min[j] = vertex.Position[j];
 			}
 
-			if (vertex.Position[i] > max[j])
+			if (vertex.Position[j] > max[j])
 			{
 				max[j] = vertex.Position[j];
 			}

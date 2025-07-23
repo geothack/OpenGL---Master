@@ -39,6 +39,9 @@ void Application::Update()
 
         FixedUpdate();
 
+        mBox.GetPositions().clear();
+        mBox.GetScales().clear();
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -73,23 +76,23 @@ void Application::Update()
             mGameCamera.MoveUp(-1.0f);
         }
 
-        if (GInput->KeyWentDown(GLFW_KEY_B))
+        /*if (GInput->KeyWentDown(GLFW_KEY_B))
         {
             mBox.GetPositions().push_back(glm::vec3(mBox.GetPositions().size() * 1.0f));
             mBox.GetScales().push_back(glm::vec3(mBox.GetScales().size() * 0.5f));
-        }
+        }*/
 
 
-        mCube.Render(mTexturedMaterial,mGameCamera, mDeltaTime);
+        mCube.Render(mTexturedMaterial,mGameCamera, mBox, mDeltaTime);
 
 
         mColouredMaterial.Attach();
         mColouredMaterial.AttachColors();
-        mPlane.Render(mColouredMaterial,mGameCamera, mDeltaTime);
+        mPlane.Render(mColouredMaterial,mGameCamera, mBox, mDeltaTime);
 
         mColouredMaterial2.Attach();
         mColouredMaterial2.AttachColors();
-        mSphere.Render(mColouredMaterial2, mGameCamera,mDeltaTime);
+        mSphere.Render(mColouredMaterial2, mGameCamera, mBox, mDeltaTime);
 
 
         glm::mat4 view = mGameCamera.GetViewMatrix();
@@ -99,14 +102,14 @@ void Application::Update()
         mTrollMaterial.SetMat4("View",view);
         mTrollMaterial.SetMat4("Projection",projection);
 
-        mTroll.Render(mTrollMaterial,mDeltaTime);
+        mTroll.Render(mTrollMaterial,mBox,mDeltaTime);
 
         mM4Material.Attach();
         mM4Material.SetMat4("View", view);
         mM4Material.SetMat4("Projection", projection);
         mM4Material.AttachColors();
 
-        mM4.Render(mM4Material,mDeltaTime);
+        mM4.Render(mM4Material,mBox,mDeltaTime);
 
         if (mBox.GetPositions().size() > 0)
         {

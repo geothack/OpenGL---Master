@@ -31,14 +31,14 @@ public:
         mUniformBuffer.BindUBOToShader("CameraData", material.GetHandle(), "Camera");
     }
 
-    void Render(Material& material, Camera& camera, const float delta)
+    void Render(Material& material, Camera& camera, Box& box, const float delta)
     {
         mCameraData.View = camera.GetViewMatrix();
         mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
         mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(mCameraData.Projection), sizeof(mCameraData.Projection));
         mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
 
-        Model::Render(material,delta);
+        Model::Render(material,box,delta);
     }
 
 private:

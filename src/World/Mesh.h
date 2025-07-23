@@ -3,6 +3,7 @@
 #include "Render/openglTexture.h"
 #include "Render/Material.h"
 #include "Algorithims/Bounds.h"
+#include "Models/Box.h"
 
 struct Vertex
 {
@@ -20,8 +21,8 @@ public:
 	Mesh(const BoundingRegion& region, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures = std::vector<openglTexture>{});
 
 
-	void Render(Material& material, bool render = true);
-	void Render(openglShader& shader, bool render = true);
+	void Render(Material& material, Box& box, const glm::vec3& position, const glm::vec3& scale, bool render = true);
+	void Render(openglShader& shader, Box& box, const glm::vec3& position, const glm::vec3& scale, bool render = true);
 
 	void Free() const;
 

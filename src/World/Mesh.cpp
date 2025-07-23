@@ -39,7 +39,7 @@ Mesh::Mesh(const BoundingRegion& region, const std::vector<Vertex>& vertices, co
 	Init();
 }
 
-void Mesh::Render(Material& material, bool render)
+void Mesh::Render(Material& material, Box& box, const glm::vec3& position, const glm::vec3& scale, bool render)
 {
 	if (mTextures.size() >= 1)
 	{
@@ -73,6 +73,8 @@ void Mesh::Render(Material& material, bool render)
 
 	if (render)
 	{
+		box.AddInstance(mBounds, position, scale);
+
 		glBindVertexArray(mVertexArrayObject);
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
@@ -81,7 +83,7 @@ void Mesh::Render(Material& material, bool render)
 	}
 }
 
-void Mesh::Render(openglShader& shader, bool render)
+void Mesh::Render(openglShader& shader, Box& box, const glm::vec3& position, const glm::vec3& scale, bool render)
 {
 	if (mTextures.size() >= 1)
 	{
@@ -115,6 +117,8 @@ void Mesh::Render(openglShader& shader, bool render)
 
 	if (render)
 	{
+		box.AddInstance(mBounds, position, scale);
+
 		glBindVertexArray(mVertexArrayObject);
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
