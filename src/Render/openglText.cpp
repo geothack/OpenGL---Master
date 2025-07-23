@@ -1,6 +1,7 @@
 #include "Core/Core.h"
 #include "openglText.h"
 #include "Core/Error.h"
+#include "glfwWindow.h"
 
 openglText::openglText(const Material& material, const Transform& transform, std::string_view message, const int height) : mMaterial(material), mTransform(transform), Message(message.data())
 	, mHeight(height)
@@ -103,7 +104,7 @@ void openglText::RenderFont()
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(mVertexArrayObject);
 
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(800), 0.0f, static_cast<float>(600));
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(glfwWindow::GetSize().Width), 0.0f, static_cast<float>(glfwWindow::GetSize().Height));
     mMaterial.Attach();
     mMaterial.SetMat4("projection", projection);
 

@@ -6,6 +6,7 @@
 #include "World/Transform.h"
 #include "Physics/3D/Rigidbody.h"
 #include "Render/openglUniformBuffer.h"
+#include "Algorithims/Bounds.h"
 
 struct CameraData
 {
@@ -17,7 +18,7 @@ class Model
 {
 public:
 	Model();
-	Model(const Transform& transform);
+	Model(const Transform& transform, BoundTypes type = BoundTypes::AABB);
 
 	void Init();
 
@@ -46,7 +47,7 @@ protected:
 	CameraData mCameraData;
 	Transform mTransform;
 	Rigidbody mRigidbody;
-
+	BoundTypes mBoundsType;
 
 private:
 	std::vector<Mesh> mModelMeshes;

@@ -2,6 +2,7 @@
 
 #include "Render/openglTexture.h"
 #include "Render/Material.h"
+#include "Algorithims/Bounds.h"
 
 struct Vertex
 {
@@ -16,7 +17,7 @@ class Mesh
 {
 public:
 	Mesh() = default;
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures = std::vector<openglTexture>{});
+	Mesh(const BoundingRegion& region, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures = std::vector<openglTexture>{});
 
 
 	void Render(Material& material, bool render = true);
@@ -32,6 +33,8 @@ private:
 	void Init();
 
 private:
+	BoundingRegion mBounds;
+
 	std::vector<Vertex> mVertices;
 	std::vector<uint32_t> mIndices;
 	std::vector<openglTexture> mTextures;

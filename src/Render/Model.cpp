@@ -6,7 +6,7 @@ Model::Model()
 {
 }
 
-Model::Model(const Transform& transform) : mTransform(transform)
+Model::Model(const Transform& transform, BoundTypes type) : mTransform(transform), mBoundsType(type)
 {
 	mRigidbody = Rigidbody("rb", Transform(transform));
 	//mRigidbody.GetAcceleration() = Environment::Gravity;
@@ -113,6 +113,11 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	std::vector<uint32_t> indices;
 	std::vector<openglTexture> textures;
 
+	BoundingRegion region{ mBoundsType };
+
+	glm::vec3 min{(float)(~0)}; // Using bitwise complenent of float which equals the max value of a float
+	glm::vec3 max{-(float)(~0)};
+
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
@@ -123,6 +128,19 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 			mesh->mVertices[i].y,
 			mesh->mVertices[i].z
 		);
+
+		for (auto j = 0; j < 3; j++)
+		{
+			if (vertex.Position[i] < min[j])
+			{
+				min[j] = vertex.Position[j];
+			}
+
+			if (vertex.Position[i] > max[j])
+			{
+				max[j] = vertex.Position[j];
+			}
+		}
 
 		vertex.Normals = glm::vec3
 		(
@@ -147,6 +165,33 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		vertices.push_back(vertex);
 	}
 
+	if (mBoundsType == BoundTypes::AABB)
+	{
+		region.GetMax() = max;
+		region.GetMin() = min;
+	}
+	else
+	{
+		region.GetCenter() = BoundingRegion(min, max).CalculateCenter();
+		float maxRadiusSquared = 0.0f;
+
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+		{
+			float radiusSquared = 0.0f;
+			for (auto j = 0; j < 3; j++)
+			{
+				radiusSquared += (vertices[i].Position[j] - region.GetCenter()[j]) * (vertices[i].Position[j] - region.GetCenter()[j]);
+			}
+
+			if (radiusSquared > maxRadiusSquared)
+			{
+				maxRadiusSquared = radiusSquared;
+			}
+		}
+
+		region.SetRadius(glm::sqrt(maxRadiusSquared));
+	}
+
 
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
@@ -169,7 +214,7 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		textures.insert(textures.end(), specular.begin(), specular.end());
 	}
 
-	return Mesh(vertices,indices,textures);
+	return Mesh(region,vertices,indices,textures);
 }
 
 std::vector<openglTexture> Model::LoadTextures(aiMaterial* material, aiTextureType type)

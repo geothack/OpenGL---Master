@@ -73,7 +73,9 @@ public:
             indices[i] = i;
         }
 
-        GetMeshes().emplace_back(Mesh(Vertex::GenerateList(vertices, 36), indices));
+        BoundingRegion region{ glm::vec3(-1.0f),glm::vec3(1.0f) };
+
+        GetMeshes().emplace_back(Mesh(region,Vertex::GenerateList(vertices, 36), indices));
 
         mCameraData.View = camera.GetViewMatrix();
         mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);

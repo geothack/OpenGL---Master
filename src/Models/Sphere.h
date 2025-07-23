@@ -10,7 +10,7 @@
 class Sphere : public Model
 {
 public:
-	Sphere(const Transform& transform) : Model(transform)
+	Sphere(const Transform& transform) : Model(transform,BoundTypes::SPHERE)
 	{
         mRigidbody = Rigidbody("rb", Transform(transform));
         //mRigidbody.GetAcceleration() = Environment::Gravity;

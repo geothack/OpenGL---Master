@@ -33,8 +33,8 @@ std::vector<Vertex> Vertex::GenerateList(const float* vertice, const int numVert
 	return ret;
 }
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures) : mVertices(vertices)
-	, mIndices(indices), mTextures(textures)
+Mesh::Mesh(const BoundingRegion& region, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures) : mVertices(vertices)
+, mIndices(indices), mTextures(textures), mBounds(region)
 {
 	Init();
 }

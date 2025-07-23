@@ -93,15 +93,15 @@ public:
     {
         material.SetMat4("Model", glm::mat4(1.0));
 
-        auto size = std::min(100, static_cast<int>(mTransforms.size()));
+        auto size = std::min(100, static_cast<int>(mPositions.size()));
 
         if (size != 0)
         {
             glBindBuffer(GL_ARRAY_BUFFER, mOffsetVertexBufferObject);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3 * sizeof(float), &mTransforms[0].GetPosition());
+            glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3 * sizeof(float), &mPositions[0]);
 
             glBindBuffer(GL_ARRAY_BUFFER, mScaleVertexBufferObject);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3 * sizeof(float), &mTransforms[0].GetScale());
+            glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3 * sizeof(float), &mScales[0]);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
@@ -117,15 +117,15 @@ public:
     {
         shader.SetMat4("Model", glm::mat4(1.0));
 
-        auto size = std::min(100, static_cast<int>(mTransforms.size()));
+        auto size = std::min(100, static_cast<int>(mPositions.size()));
 
         if (size != 0)
         {
             glBindBuffer(GL_ARRAY_BUFFER, mOffsetVertexBufferObject);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3 * sizeof(float), &mTransforms[0].GetPosition());
+            glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3 * sizeof(float), &mPositions[0]);
 
             glBindBuffer(GL_ARRAY_BUFFER, mScaleVertexBufferObject);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3 * sizeof(float), &mTransforms[0].GetScale());
+            glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3 * sizeof(float), &mScales[0]);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
@@ -134,6 +134,13 @@ public:
         glBindVertexArray(mVertexArrayObject);
         glDrawElementsInstanced(GL_LINES, mIndices.size(), GL_UNSIGNED_INT, 0, size);
         glBindVertexArray(0);
+    }
+
+    void AddInstance(BoundingRegion& region, const glm::vec3& position, const glm::vec3& scale)
+    {
+        mPositions.push_back(region.CalculateCenter() * scale + position);
+
+        mScales.push_back(region.CalculateDimensions() * scale);
     }
 
 
@@ -146,7 +153,8 @@ public:
         glDeleteBuffers(1, &mScaleVertexBufferObject);
     }
 
-    std::vector<Transform>& GetTransforms() { return mTransforms; }
+    std::vector<glm::vec3>& GetPositions() { return mPositions; }
+    std::vector<glm::vec3>& GetScales() { return mScales; }
 
 private:
 	uint32_t mVertexArrayObject;
@@ -159,5 +167,6 @@ private:
 	std::vector<float> mVertices;
 	std::vector<uint32_t> mIndices;
 
-    std::vector<Transform> mTransforms;
+    std::vector<glm::vec3> mPositions;
+    std::vector<glm::vec3> mScales;
 };

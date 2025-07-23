@@ -75,7 +75,8 @@ void Application::Update()
 
         if (GInput->KeyWentDown(GLFW_KEY_B))
         {
-            mBox.GetTransforms().push_back(Transform(glm::vec3(mBox.GetTransforms().size() * 1.0f), glm::vec3(0.0f), glm::vec3(glm::vec3(mBox.GetTransforms().size() * 0.5f))));
+            mBox.GetPositions().push_back(glm::vec3(mBox.GetPositions().size() * 1.0f));
+            mBox.GetScales().push_back(glm::vec3(mBox.GetScales().size() * 0.5f));
         }
 
 
@@ -107,7 +108,7 @@ void Application::Update()
 
         mM4.Render(mM4Material,mDeltaTime);
 
-        if (mBox.GetTransforms().size() > 0)
+        if (mBox.GetPositions().size() > 0)
         {
             mBoxShader.Attach();
             mBoxShader.SetMat4("View", view);
