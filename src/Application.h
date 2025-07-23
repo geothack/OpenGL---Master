@@ -79,5 +79,7 @@ private:
 	Material mColouredMaterial2 = Material({ .Red = 0.29, .Green = 0.57, .Blue = 0.90 }, MaterialType::Model3d);
 	Sphere mSphere = Sphere(Transform(glm::vec3(-2.5,2.0,0.0),glm::vec3(0.0),glm::vec3(0.05)));
 
+	openglShader instancedShader = openglShader("res/Shaders/Models/ModelInstanced.vert", "res/Shaders/Models/ModelInstanced.frag");
+
 };
 

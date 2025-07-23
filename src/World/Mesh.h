@@ -19,10 +19,14 @@ public:
 	Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<openglTexture>& textures = std::vector<openglTexture>{});
 
 
-	void Render(Material& material);
-	void Render(openglShader& shader);
+	void Render(Material& material, bool render = true);
+	void Render(openglShader& shader, bool render = true);
 
 	void Free() const;
+
+	uint32_t GetVertexArray() { return mVertexArrayObject; }
+
+	std::vector<uint32_t>& GetIndices() { return mIndices; }
 
 private:
 	void Init();

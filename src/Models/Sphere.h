@@ -50,9 +50,9 @@ class SphereArray : public ModelArray<Sphere>
 {
 public:
 
-    void Init()
+    void Init(Material& material, Camera& camera)
     {
         mModel = Sphere(Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.25f)));
-        //mModel.Init();
+        ModelArray::Init(material, camera);
     }
 };

@@ -31,51 +31,57 @@ void Model::Load(const std::filesystem::path& directory, const std::filesystem::
 	ProcessNode(scene->mRootNode, scene);
 }
 
-void Model::Render(Material& material, const float delta)
+void Model::Render(Material& material, const float delta, bool setModel, bool render)
 {
 	mRigidbody.Update(delta);
 
-	glm::mat4 model = glm::mat4(1.0f);
-	//model = glm::translate(model, mTransform.GetPosition());
-	model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
-	model = glm::scale(model, mTransform.GetScale());
-
-	if (mTransform.GetRotation() != glm::vec3(0.0))
+	if (setModel)
 	{
-		model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
-	}
+		glm::mat4 model = glm::mat4(1.0f);
+		//model = glm::translate(model, mTransform.GetPosition());
+		model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
+		model = glm::scale(model, mTransform.GetScale());
 
-	material.Attach();
-	material.SetMat4("Model", model);
+		if (mTransform.GetRotation() != glm::vec3(0.0))
+		{
+			model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
+		}
+
+		material.Attach();
+		material.SetMat4("Model", model);
+	}
 
 
 	for (auto& mesh : mModelMeshes)
 	{
-		mesh.Render(material);
+		mesh.Render(material,render);
 	}
 }
 
-void Model::Render(openglShader& shader, const float delta)
+void Model::Render(openglShader& shader, const float delta, bool setModel, bool render)
 {
 	mRigidbody.Update(delta);
 
-	glm::mat4 model = glm::mat4(1.0f);
-	//model = glm::translate(model, mTransform.GetPosition());
-	model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
-	model = glm::scale(model, mTransform.GetScale());
-
-	if (mTransform.GetRotation() != glm::vec3(0.0))
+	if (setModel)
 	{
-		model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
-	}
+		glm::mat4 model = glm::mat4(1.0f);
+		//model = glm::translate(model, mTransform.GetPosition());
+		model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
+		model = glm::scale(model, mTransform.GetScale());
 
-	shader.Attach();
-	shader.SetMat4("Model", model);
+		if (mTransform.GetRotation() != glm::vec3(0.0))
+		{
+			model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
+		}
+
+		shader.Attach();
+		shader.SetMat4("Model", model);
+	}
 
 
 	for (auto& mesh : mModelMeshes)
 	{
-		mesh.Render(shader);
+		mesh.Render(shader,render);
 	}
 }
 

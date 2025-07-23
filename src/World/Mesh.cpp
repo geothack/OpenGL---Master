@@ -39,7 +39,7 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& ind
 	Init();
 }
 
-void Mesh::Render(Material& material)
+void Mesh::Render(Material& material, bool render)
 {
 	if (mTextures.size() >= 1)
 	{
@@ -71,14 +71,17 @@ void Mesh::Render(Material& material)
 		material.AttachTextures();
 	}
 
-	glBindVertexArray(mVertexArrayObject);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	if (render)
+	{
+		glBindVertexArray(mVertexArrayObject);
+		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
-	glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0);
+	}
 }
 
-void Mesh::Render(openglShader& shader)
+void Mesh::Render(openglShader& shader, bool render)
 {
 	if (mTextures.size() >= 1)
 	{
@@ -110,11 +113,15 @@ void Mesh::Render(openglShader& shader)
 		//shader.AttachTextures();
 	}
 
-	glBindVertexArray(mVertexArrayObject);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	if (render)
+	{
+		glBindVertexArray(mVertexArrayObject);
+		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
-	glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0);
+	}
+
 }
 
 void Mesh::Free() const

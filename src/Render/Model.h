@@ -5,6 +5,7 @@
 #include "Render/openglTexture.h"
 #include "World/Transform.h"
 #include "Physics/3D/Rigidbody.h"
+#include "Render/openglUniformBuffer.h"
 
 struct CameraData
 {
@@ -22,8 +23,8 @@ public:
 
 	void Load(const std::filesystem::path& directory, const std::filesystem::path& path);
 
-	void Render(Material& material, const float delta);
-	void Render(openglShader& shader, const float delta);
+	void Render(Material& material, const float delta, bool setModel = true, bool render = true);
+	void Render(openglShader& shader, const float delta, bool setModel = true, bool render = true);
 
 	void Free();
 
@@ -38,6 +39,8 @@ protected:
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
 
 	std::vector<openglTexture> LoadTextures(aiMaterial* material, aiTextureType type);
+
+	openglUniformBuffer mUniformBuffer{};
 
 protected:
 	CameraData mCameraData;
