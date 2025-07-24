@@ -75,9 +75,9 @@ void Mesh::Render(Material& material, Box& box, const glm::vec3& position, const
 	{
 		box.AddInstance(mBounds, position, scale);
 
-		glBindVertexArray(mVertexArrayObject);
+		mArrayObject.Attach();
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		ArrayObject::Detach();
 
 		glActiveTexture(GL_TEXTURE0);
 	}
@@ -119,45 +119,41 @@ void Mesh::Render(openglShader& shader, Box& box, const glm::vec3& position, con
 	{
 		box.AddInstance(mBounds, position, scale);
 
-		glBindVertexArray(mVertexArrayObject);
+		mArrayObject.Attach();
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndices.size()), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		ArrayObject::Detach();
 
 		glActiveTexture(GL_TEXTURE0);
 	}
 
 }
 
-void Mesh::Free() const
+void Mesh::Free() 
 {
-	glDeleteVertexArrays(1, &mVertexArrayObject);
-	glDeleteBuffers(1, &mVertexBufferObject);
-	glDeleteBuffers(1, &mElementBufferObject);
-
+	mArrayObject.Free();
 }
 
 void Mesh::Init()
 {
-	glGenVertexArrays(1, &mVertexArrayObject);
-	glGenBuffers(1, &mVertexBufferObject);
-	glGenBuffers(1, &mElementBufferObject);
+	mArrayObject.Generate();
+	mArrayObject.Attach();
 
-	glBindVertexArray(mVertexArrayObject);
+	mArrayObject["EBO"] = BufferObject(GL_ELEMENT_ARRAY_BUFFER);
+	mArrayObject["EBO"].Generate();
+	mArrayObject["EBO"].Attach();
+	mArrayObject["EBO"].SetData<uint32_t>(mIndices.size(),&mIndices[0],GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(Vertex), &mVertices[0], GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferObject);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(uint32_t), &mIndices[0], GL_STATIC_DRAW);
+	mArrayObject["VBO"] = BufferObject(GL_ARRAY_BUFFER);
+	mArrayObject["VBO"].Generate();
+	mArrayObject["VBO"].Attach();
+	mArrayObject["VBO"].SetData<Vertex>(mVertices.size(), &mVertices[0], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Position)));
-	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex,TextureCoordinates)));
-	glEnableVertexAttribArray(1);
+	mArrayObject["VBO"].SetAttPointer<GLfloat>(0, 3, GL_FLOAT, 8, 0);
+	mArrayObject["VBO"].SetAttPointer<GLfloat>(1, 2, GL_FLOAT, 8, 3);
+	mArrayObject["VBO"].SetAttPointer<GLfloat>(2, 3, GL_FLOAT, 8, 5);
 
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Normals)));
-	glEnableVertexAttribArray(2);
 
-	glBindVertexArray(0);
+	ArrayObject::Detach();
 }

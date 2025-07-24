@@ -9,30 +9,36 @@ public:
     {
     }
 
-    void generate() 
+    void Generate() 
     {
         glGenBuffers(1, &val);
     }
 
-    void Attach()
+    void Attach() const
     {
         glBindBuffer(type, val);
     }
 
     template<typename T>
-    void setData(GLuint noElements, T* data, GLenum usage)
+    void SetData(GLuint noElements, T* data, GLenum usage)
     {
         glBufferData(type, noElements * sizeof(T), data, usage);
     }
 
     template<typename T>
-    void updateData(GLintptr offset, GLuint noElements, T* data) 
+    void SetData(T& data, GLenum usage)
+    {
+        glBufferData(type, sizeof(data), data, usage);
+    }
+
+    template<typename T>
+    void UpdateData(GLintptr offset, GLuint noElements, T* data) 
     {
         glBufferSubData(type, offset, noElements * sizeof(T), data);
     }
 
     template<typename T>
-    void setAttPointer(GLuint idx, GLint size, GLenum type, GLuint stride, GLuint offset, GLuint divisor = 0)
+    void SetAttPointer(GLuint idx, GLint size, GLenum type, GLuint stride, GLuint offset, GLuint divisor = 0)
     {
         glVertexAttribPointer(idx, size, type, GL_FALSE, stride * sizeof(T), (void*)(offset * sizeof(T)));
         glEnableVertexAttribArray(idx);
@@ -42,12 +48,12 @@ public:
         }
     }
 
-    void Detach()
+    void Detach() const
     {
         glBindBuffer(type, 0);
     }
 
-    void Free() 
+    void Free() const
     {
         glDeleteBuffers(1, &val);
     }
@@ -64,22 +70,22 @@ public:
         return buffers[key];
     }
 
-    void generate() 
+    void Generate() 
     {
         glGenVertexArrays(1, &val);
     }
 
-    void Attach() 
+    void Attach() const
     {
         glBindVertexArray(val);
     }
 
-    void draw(GLenum mode, GLuint first, GLuint count)
+    void Draw(GLenum mode, GLuint first, GLuint count) const
     {
         glDrawArrays(mode, first, count);
     }
 
-    void draw(GLenum mode, GLuint count, GLenum type, GLint indices, GLuint instancecount = 1)
+    void Draw(GLenum mode, GLuint count, GLenum type, GLint indices, GLuint instancecount = 1) const
     {
         glDrawElementsInstanced(mode, count, type, (void*)indices, instancecount);
     }
@@ -93,7 +99,7 @@ public:
         }
     }
 
-    static void Detach()
+    static void Detach() 
     {
         glBindVertexArray(0);
     }

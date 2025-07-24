@@ -4,6 +4,7 @@
 #include "Render/openglTexture.h"
 #include "World/Transform.h"
 #include "openglUniformBuffer.h"
+#include "Core/VertexMemory.h"
 
 class openglSprite
 {
@@ -16,7 +17,7 @@ public:
     void Init(Material& material);
 
 private:
-    uint32_t mVertexArrayObject;
+    ArrayObject mArrayObject;
 
     struct SpriteCamera
     {

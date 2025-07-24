@@ -3,6 +3,7 @@
 
 #include "Render/Material.h"
 #include "World/Transform.h"
+#include "Core/VertexMemory.h"
 
 struct Character
 {
@@ -26,8 +27,8 @@ public:
 
 	std::map<GLchar, Character> Characters;
 
-	uint32_t GetVertexArray() { return mVertexArrayObject; }
-	uint32_t GetVertexBuffer() { return mVertexBufferOject; }
+	GLuint GetVertexArray() { return mArrayObject.val; }
+	GLuint GetVertexBuffer() { return mArrayObject["VBO"].val; }
 
 private:
 	Material mMaterial;
@@ -35,8 +36,7 @@ private:
 
 	glm::mat4 mWorld;
 
-	uint32_t mVertexArrayObject;
-	uint32_t mVertexBufferOject;
+	ArrayObject mArrayObject;
 
 	int mHeight;
 };

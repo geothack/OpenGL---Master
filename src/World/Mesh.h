@@ -4,6 +4,7 @@
 #include "Render/Material.h"
 #include "Algorithims/Bounds.h"
 #include "Models/Box.h"
+#include "Core/VertexMemory.h"
 
 struct Vertex
 {
@@ -24,9 +25,9 @@ public:
 	void Render(Material& material, Box& box, const glm::vec3& position, const glm::vec3& scale, bool render = true);
 	void Render(openglShader& shader, Box& box, const glm::vec3& position, const glm::vec3& scale, bool render = true);
 
-	void Free() const;
+	void Free();
 
-	uint32_t GetVertexArray() { return mVertexArrayObject; }
+	GLuint GetVertexArray() { return mArrayObject.val; }
 
 	std::vector<uint32_t>& GetIndices() { return mIndices; }
 
@@ -40,8 +41,6 @@ private:
 	std::vector<uint32_t> mIndices;
 	std::vector<openglTexture> mTextures;
 
-	uint32_t mVertexArrayObject;
-	uint32_t mVertexBufferObject;
-	uint32_t mElementBufferObject;
+	ArrayObject mArrayObject;
 };
 

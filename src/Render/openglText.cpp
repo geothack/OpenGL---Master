@@ -82,17 +82,19 @@ void openglText::LoadFont(const std::filesystem::path& path)
         1.0f,0.0f
     };
 
-    glGenVertexArrays(1, &mVertexArrayObject);
-    glBindVertexArray(mVertexArrayObject);
+    mArrayObject.Generate();
+    mArrayObject.Attach();
 
-    glGenBuffers(1, &mVertexBufferOject);
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferOject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
+    mArrayObject["VBO"].Generate();
+    mArrayObject["VBO"].Attach();
+    mArrayObject["VBO"].SetData(vertex_data,GL_STATIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    mArrayObject["VBO"].SetAttPointer<GLfloat>(0, 2, GL_FLOAT, 0, 0);
+    mArrayObject["VBO"].Detach();
+    ArrayObject::Detach();
+   
 
 }
 
@@ -102,7 +104,7 @@ void openglText::RenderFont()
     mMaterial.Attach();
     mMaterial.AttachColors();
     glActiveTexture(GL_TEXTURE0);
-    glBindVertexArray(mVertexArrayObject);
+    mArrayObject.Attach();
 
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(glfwWindow::GetSize().Width), 0.0f, static_cast<float>(glfwWindow::GetSize().Height));
     mMaterial.Attach();
@@ -131,7 +133,7 @@ void openglText::RenderFont()
             mMaterial.SetMat4("transform", mWorld);
 
             glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-            glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferOject);
+            mArrayObject["VBO"].Attach();
 
             glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, 1);
             mTransform.SetPosition(glm::vec3(mTransform.GetPosition().x += (ch.Advance >> 6) * mTransform.GetScale().x, mTransform.GetPosition().y, mTransform.GetPosition().z));
@@ -139,7 +141,7 @@ void openglText::RenderFont()
     }
     mTransform.SetPosition(glm::vec3(copyX, mTransform.GetPosition().y, mTransform.GetPosition().z));
 
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    ArrayObject::Detach();
+    mArrayObject["VBO"].Detach();
     glBindTexture(GL_TEXTURE_2D, 0);
 }

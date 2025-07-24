@@ -31,14 +31,18 @@ void openglSprite::Render(Material& material, Transform& transform, const opengl
         glBindTextureUnit(0, texture.GetHandle());
     }
 
-    glBindVertexArray(mVertexArrayObject);
+    mArrayObject.Attach();
     glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
+    ArrayObject::Detach();
 }
 
 void openglSprite::Init(Material& material)
 {
-    uint32_t vertexBufferObject;
+    mArrayObject.Generate();
+
+    mArrayObject["VBO"] = BufferObject(GL_ARRAY_BUFFER);
+    mArrayObject["VBO"].Generate();
+
     float vertices[] =
     {
         0.0f, 1.0f, 0.0f, 1.0f,
@@ -50,17 +54,14 @@ void openglSprite::Init(Material& material)
         1.0f, 0.0f, 1.0f, 0.0f
     };
 
-    glGenVertexArrays(1, &mVertexArrayObject);
-    glGenBuffers(1, &vertexBufferObject);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    mArrayObject["VBO"].Attach();
+    mArrayObject["VBO"].SetData(vertices, GL_STATIC_DRAW);
 
-    glBindVertexArray(mVertexArrayObject);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    mArrayObject.Attach();
+    mArrayObject["VBO"].SetAttPointer<GLfloat>(0, 4, GL_FLOAT, 4, 0);
+    mArrayObject["VBO"].Detach();
+    ArrayObject::Detach();
 
 
     mSpriteCamera.Projection = glm::ortho(0.0f, static_cast<float>(glfwWindow::GetSize().Width), static_cast<float>(glfwWindow::GetSize().Height), 0.0f, -1.0f, 1.0f);

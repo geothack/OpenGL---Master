@@ -54,7 +54,7 @@ void Model::Render(Material& material, Box& box, const float delta, bool setMode
 
 	for (auto& mesh : mModelMeshes)
 	{
-		mesh.Render(material,box,mTransform.GetPosition(),mTransform.GetScale(), render);
+		mesh.Render(material,box,mRigidbody.GetTransform().GetPosition(), mRigidbody.GetTransform().GetScale(), render);
 	}
 }
 
