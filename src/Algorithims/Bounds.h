@@ -27,7 +27,9 @@ public:
 	bool IntersectsWith(BoundingRegion& region);
 
 	glm::vec3& GetMax() { return mMax; }
+	glm::vec3& SetMax(const glm::vec3& value) { return mMax = value; }
 	glm::vec3& GetMin() { return mMin; }
+	glm::vec3& SetMin(const glm::vec3& value) { return mMin = value; }
 	glm::vec3& GetCenter() { return mCenter; }
 
 	void SetRadius(const float value) { mRadius = value; }

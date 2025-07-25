@@ -8,6 +8,7 @@
 #include "Render/openglUniformBuffer.h"
 #include "Algorithims/Bounds.h"
 #include "Models/Box.h"
+#include "Render/Camera.h"
 
 struct CameraData
 {
@@ -19,14 +20,14 @@ class Model
 {
 public:
 	Model();
-	Model(const Transform& transform, BoundTypes type = BoundTypes::AABB);
+	Model(const Transform& transform, Camera& camera, BoundTypes type = BoundTypes::AABB);
 
 	void Init();
 
 	void Load(const std::filesystem::path& directory, const std::filesystem::path& path);
 
-	void Render(Material& material, Box& box, const float delta, bool setModel = true, bool render = true);
-	void Render(openglShader& shader, Box& box, const float delta, bool setModel = true, bool render = true);
+	void Render(Material& material, Camera& camera, Box& box, const float delta, bool setModel = true, bool render = true);
+	void Render(openglShader& shader, Camera& camera, Box& box, const float delta, bool setModel = true, bool render = true);
 
 	void Free();
 
@@ -49,6 +50,7 @@ protected:
 	Transform mTransform;
 	Rigidbody mRigidbody;
 	BoundTypes mBoundsType;
+	Camera mGameCamera;
 
 private:
 	std::vector<Mesh> mModelMeshes;

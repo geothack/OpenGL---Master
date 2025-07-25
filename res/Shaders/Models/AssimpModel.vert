@@ -3,10 +3,14 @@
 layout (location = 0) in vec3 Pos;
 layout (location = 1) in vec2 Tex;
 
+layout (std140, binding = 0) uniform Camera
+{
+    mat4 Projection;
+    mat4 View;
+};
+
 out vec2 Coords;
 
-uniform mat4 Projection;
-uniform mat4 View;
 uniform mat4 Model;
 
 void main()

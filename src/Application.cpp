@@ -76,13 +76,14 @@ void Application::Update()
             mGameCamera.MoveUp(-1.0f);
         }
 
-        /*if (GInput->KeyWentDown(GLFW_KEY_B))
+        if (GInput->KeyWentDown(GLFW_KEY_B))
         {
-            mBox.GetPositions().push_back(glm::vec3(mBox.GetPositions().size() * 1.0f));
-            mBox.GetScales().push_back(glm::vec3(mBox.GetScales().size() * 0.5f));
-        }*/
+            /*mBox.GetPositions().push_back(glm::vec3(mBox.GetPositions().size() * 1.0f));
+            mBox.GetScales().push_back(glm::vec3(mBox.GetScales().size() * 0.5f));*/
+            
+        }
 
-
+        BoxCollider collider = BoxCollider(BoundTypes::AABB, mBox, glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.5));
         mCube.Render(mTexturedMaterial,mGameCamera, mBox, mDeltaTime);
 
 
@@ -94,30 +95,18 @@ void Application::Update()
         mColouredMaterial2.AttachColors();
         mSphere.Render(mColouredMaterial2, mGameCamera, mBox, mDeltaTime);
 
+        mTroll.Render(mTrollMaterial,mGameCamera,mBox,mDeltaTime);
+
+        mM4Material.Attach();
+        mM4Material.AttachColors();
+        mM4.Render(mM4Material,mGameCamera,mBox,mDeltaTime);
 
         glm::mat4 view = mGameCamera.GetViewMatrix();
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
 
-        mTrollMaterial.Attach();
-        mTrollMaterial.SetMat4("View",view);
-        mTrollMaterial.SetMat4("Projection",projection);
-
-        mTroll.Render(mTrollMaterial,mBox,mDeltaTime);
-
-        mM4Material.Attach();
-        mM4Material.SetMat4("View", view);
-        mM4Material.SetMat4("Projection", projection);
-        mM4Material.AttachColors();
-
-        mM4.Render(mM4Material,mBox,mDeltaTime);
-
         if (mBox.GetPositions().size() > 0)
         {
-            mBoxShader.Attach();
-            mBoxShader.SetMat4("View", view);
-            mBoxShader.SetMat4("Projection", projection);
-
-            mBox.Render(mBoxShader);
+            mBox.Render(mBoxShader,mGameCamera);
         }
 
         glDisable(GL_DEPTH_TEST);
@@ -158,10 +147,10 @@ void Application::Init()
 
 void Application::LoadMeshes()
 {
-    mCube.Init(mTexturedMaterial, mGameCamera);
-    mPlane.Init(mColouredMaterial, mGameCamera);
-    mSphere.Init(mColouredMaterial2, mGameCamera);
-    mBox.Init();
+    mCube.Init(mTexturedMaterial);
+    mPlane.Init(mColouredMaterial);
+    mSphere.Init(mColouredMaterial2);
+    mBox.Init(mGameCamera);
 
     mTroll.Load("res/Models/Troll","scene.gltf");
     mM4.Load("res/Models/M4A1","scene.gltf");

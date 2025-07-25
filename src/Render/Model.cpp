@@ -1,15 +1,26 @@
 #include "Core/Core.h"
 #include "Model.h"
 #include "Core/Error.h"
+#include "glfwWindow.h"
+
 
 Model::Model()
 {
 }
 
-Model::Model(const Transform& transform, BoundTypes type) : mTransform(transform), mBoundsType(type)
+Model::Model(const Transform& transform, Camera& camera, BoundTypes type) : mTransform(transform), mGameCamera(camera), mBoundsType(type)
 {
 	mRigidbody = Rigidbody("rb", Transform(transform));
 	//mRigidbody.GetAcceleration() = Environment::Gravity;
+
+	mCameraData.View = camera.GetViewMatrix();
+	mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
+
+	mUniformBuffer.CreateUBO("CameraData", sizeof(CameraData), 0);
+
+	mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(mCameraData.Projection), sizeof(mCameraData.Projection));
+	mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
+
 }
 
 void Model::Init()
@@ -31,12 +42,17 @@ void Model::Load(const std::filesystem::path& directory, const std::filesystem::
 	ProcessNode(scene->mRootNode, scene);
 }
 
-void Model::Render(Material& material, Box& box, const float delta, bool setModel, bool render)
+void Model::Render(Material& material, Camera& camera, Box& box, const float delta, bool setModel, bool render)
 {
 	mRigidbody.Update(delta);
 
 	if (setModel)
 	{
+		mCameraData.View = camera.GetViewMatrix();
+		mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
+		mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(mCameraData.Projection), sizeof(mCameraData.Projection));
+		mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
+
 		glm::mat4 model = glm::mat4(1.0f);
 		//model = glm::translate(model, mTransform.GetPosition());
 		model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
@@ -58,12 +74,17 @@ void Model::Render(Material& material, Box& box, const float delta, bool setMode
 	}
 }
 
-void Model::Render(openglShader& shader, Box& box, const float delta, bool setModel, bool render)
+void Model::Render(openglShader& shader, Camera& camera, Box& box, const float delta, bool setModel, bool render)
 {
 	mRigidbody.Update(delta);
 
 	if (setModel)
 	{
+		mCameraData.View = camera.GetViewMatrix();
+		mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
+		mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(mCameraData.Projection), sizeof(mCameraData.Projection));
+		mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
+
 		glm::mat4 model = glm::mat4(1.0f);
 		//model = glm::translate(model, mTransform.GetPosition());
 		model = glm::translate(model, mRigidbody.GetTransform().GetPosition());

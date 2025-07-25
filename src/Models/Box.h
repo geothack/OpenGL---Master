@@ -4,15 +4,19 @@
 
 #include "World/Transform.h"
 #include "Render/Material.h"
+#include "Algorithims/Bounds.h"
+#include "Render/Camera.h"
+#include "glfwWindow.h"
+#include "Render/openglUniformBuffer.h"
 
 class Box
 {
 public:
 
 
-	void Init()
-	{
-        mVertices = 
+    void Init(Camera& camera)
+    {
+        mVertices =
         {
             // position             x   y   z   i
              0.5f,  0.5f,  0.5f, // +   +   +   0
@@ -25,7 +29,7 @@ public:
              0.5f, -0.5f, -0.5f  // +   -   -   7
         };
 
-        mIndices = 
+        mIndices =
         { // 12 lines
             // front face (+ve z)
             0, 1,
@@ -87,10 +91,24 @@ public:
         glVertexAttribDivisor(2, 1);
 
         glBindVertexArray(0);
-	}
 
-    void Render(Material& material)
+        mCameraData.View = camera.GetViewMatrix();
+        mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
+
+        mUniformBuffer.CreateUBO("CameraData", sizeof(CameraData), 0);
+
+        mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(mCameraData.Projection), sizeof(mCameraData.Projection));
+        mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
+    }
+
+    void Render(Material& material, Camera& camera)
     {
+        material.Attach();
+        mCameraData.View = camera.GetViewMatrix();
+        mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
+        mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(mCameraData.Projection), sizeof(mCameraData.Projection));
+        mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
+
         material.SetMat4("Model", glm::mat4(1.0));
 
         auto size = std::min(100, static_cast<int>(mPositions.size()));
@@ -106,15 +124,21 @@ public:
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
-        
+
         glBindVertexArray(mVertexArrayObject);
         glDrawElementsInstanced(GL_LINES, mIndices.size(), GL_UNSIGNED_INT, 0, size);
         glBindVertexArray(0);
-        
+
     }
 
-    void Render(openglShader& shader)
+    void Render(openglShader& shader, Camera& camera)
     {
+        shader.Attach();
+        mCameraData.View = camera.GetViewMatrix();
+        mCameraData.Projection = glm::perspective(glm::radians(45.0f), (float)glfwWindow::GetSize().Width / (float)glfwWindow::GetSize().Height, 0.1f, 100.0f);
+        mUniformBuffer.UpdateUBOData("CameraData", 0, glm::value_ptr(mCameraData.Projection), sizeof(mCameraData.Projection));
+        mUniformBuffer.UpdateUBOData("CameraData", sizeof(mCameraData.View), glm::value_ptr(mCameraData.View), sizeof(mCameraData.View));
+
         shader.SetMat4("Model", glm::mat4(1.0));
 
         auto size = std::min(100, static_cast<int>(mPositions.size()));
@@ -157,16 +181,43 @@ public:
     std::vector<glm::vec3>& GetScales() { return mScales; }
 
 private:
-	uint32_t mVertexArrayObject;
-	uint32_t mVertexBufferObject;
-	uint32_t mElementBufferObject;
+    uint32_t mVertexArrayObject;
+    uint32_t mVertexBufferObject;
+    uint32_t mElementBufferObject;
 
-	uint32_t mOffsetVertexBufferObject;
-	uint32_t mScaleVertexBufferObject;
+    uint32_t mOffsetVertexBufferObject;
+    uint32_t mScaleVertexBufferObject;
 
-	std::vector<float> mVertices;
-	std::vector<uint32_t> mIndices;
+    std::vector<float> mVertices;
+    std::vector<uint32_t> mIndices;
 
     std::vector<glm::vec3> mPositions;
     std::vector<glm::vec3> mScales;
+
+    openglUniformBuffer mUniformBuffer{};
+
+    struct CameraData
+    {
+        alignas(16) glm::mat4 Projection;
+        alignas(16) glm::mat4 View;
+    };
+
+    CameraData mCameraData{};
+};
+
+class BoxCollider
+{
+public:
+    BoxCollider(BoundTypes type, Box& boxes, const glm::vec3& position, const glm::vec3& scale)
+    {
+        mBounds = BoundingRegion(type);
+        mBounds.SetMin(glm::vec3(-5.0f));
+        mBounds.SetMax(glm::vec3(5.0f));
+        boxes.AddInstance(mBounds, position, scale);
+    }
+
+
+private:
+    BoundingRegion mBounds;
+
 };

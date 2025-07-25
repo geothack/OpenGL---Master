@@ -44,11 +44,11 @@ private:
 
 	Material mTexturedMaterial = Material({ .Red = 0, .Green = 0, .Blue = 0 }, MaterialType::Model3d, { mRockTexture });
 
-	Cube mCube = Cube(Transform(glm::vec3(0.0,2.0,0.0), glm::vec3(1.0f, 0.3f, 0.5f),glm::vec3(0.5)));
+	Cube mCube = Cube(Transform(glm::vec3(0.0,2.0,0.0), glm::vec3(1.0f, 0.3f, 0.5f),glm::vec3(0.5)),mGameCamera);
 
 	Material mColouredMaterial = Material({ .Red = 0.89, .Green = 0.67, .Blue = 0.340 }, MaterialType::Model3d);
 
-	Plane mPlane = Plane(Transform());
+	Plane mPlane = Plane(Transform(),mGameCamera);
 
 	Camera mGameCamera = Camera(glm::vec3(0.0,0.0,12.0));
 
@@ -64,11 +64,11 @@ private:
 
 	Material mTrollMaterial = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.28 }, MaterialType::AssimpModel);
 
-	Model mTroll = Model(Transform(glm::vec3(5.0,1.0f,0.0f),glm::vec3(0.0),glm::vec3(0.01)));
+	Model mTroll = Model(Transform(glm::vec3(5.0,1.0f,0.0f),glm::vec3(0.0),glm::vec3(0.01)),mGameCamera);
 
 	Material mM4Material = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.88 }, MaterialType::AssimpModelColored);
 
-	Model mM4 = Model(Transform(glm::vec3(-5.0, 1.0f, 0.0f), glm::vec3(0.0), glm::vec3(0.01)));
+	Model mM4 = Model(Transform(glm::vec3(-5.0, 1.0f, 0.0f), glm::vec3(0.0), glm::vec3(0.01)),mGameCamera);
 
 
 
@@ -78,7 +78,7 @@ private:
 
 
 	Material mColouredMaterial2 = Material({ .Red = 0.29, .Green = 0.57, .Blue = 0.90 }, MaterialType::Model3d);
-	Sphere mSphere = Sphere(Transform(glm::vec3(-2.5,2.0,0.0),glm::vec3(0.0),glm::vec3(0.05)));
+	Sphere mSphere = Sphere(Transform(glm::vec3(-2.5,2.0,0.0),glm::vec3(0.0),glm::vec3(0.05)),mGameCamera);
 
 	openglShader instancedShader = openglShader("res/Shaders/Models/ModelInstanced.vert", "res/Shaders/Models/ModelInstanced.frag");
 	openglShader mBoxShader = openglShader("res/Shaders/Models/Box.vert", "res/Shaders/Models/Box.frag");

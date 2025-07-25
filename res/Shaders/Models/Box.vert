@@ -4,10 +4,14 @@ layout (location = 0) in vec3 Pos;
 layout (location = 1) in vec3 aOffset;
 layout (location = 2) in vec3 aScale;
 
+layout (std140, binding = 0) uniform Camera
+{
+    mat4 Projection;
+    mat4 View;
+};
+
 
 uniform mat4 Model;
-uniform mat4 View;
-uniform mat4 Projection;
 
 void main()
 {
