@@ -21,6 +21,7 @@ project "OpenGL-Master"
         "deps/assimp/include",
         "deps/ttf/include",
         "deps/box2d/include",
+        "deps/entt/include",
     }
 
     libdirs 
