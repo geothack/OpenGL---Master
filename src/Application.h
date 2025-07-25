@@ -12,6 +12,8 @@
 #include "Render/openglText.h"
 #include "Models/Sphere.h"
 #include "Models/Box.h"
+#include "Gameplay/AmmoText.h"
+#include "World/Level.h"
 
 class Application
 {
@@ -73,7 +75,7 @@ private:
 
 
 	Material mTextMaterial = Material({ .Red = 1.0,.Green = 1.0,.Blue = 1.0 }, MaterialType::Text);
-	openglText mHelloText = openglText(mTextMaterial, Transform(glm::vec3(540.0f, 570.0f, 0.0f), glm::vec3(0.0), glm::vec3(1.0f)), "Hello World", 25);
+	//openglText mHelloText = openglText(mTextMaterial, Transform(glm::vec3(540.0f, 570.0f, 0.0f), glm::vec3(0.0), glm::vec3(1.0f)), "Hello World", 25);
 
 
 
@@ -84,6 +86,12 @@ private:
 	openglShader mBoxShader = openglShader("res/Shaders/Models/Box.vert", "res/Shaders/Models/Box.frag");
 
 	Box mBox{};
+
+	// Levels
+	Level mActiveLevel{};
+
+	// Gameplay Entities
+	AmmoText mAmmoCounterText{};
 
 };
 

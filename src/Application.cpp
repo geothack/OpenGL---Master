@@ -120,7 +120,8 @@ void Application::Update()
         spriteTransform = Transform(glm::vec3(glfwWindow::GetSize().Width - 60, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
         mColoredSprite.Render(mSpriteColoredShader,spriteTransform);
 
-        mHelloText.RenderFont();
+        //mHelloText.RenderFont();
+        mAmmoCounterText.GetComponent<openglText>().RenderFont(mAmmoCounterText.GetComponent<Material>(), mAmmoCounterText.GetComponent<Transform>());
 
         glEnable(GL_DEPTH_TEST);
 
@@ -158,17 +159,10 @@ void Application::LoadMeshes()
 
 void Application::LoadShaders()
 {
-    // 3D
-    Cache.Insert<Material>("Textured", Material({ .Red = 0.0, .Green = 0.0, .Blue = 0.0 }, MaterialType::Model3d, { Cache.Find<openglTexture>("Rock") }));
-    Cache.Insert<Material>("Colored", Material({ .Red = 0.89, .Green = 0.67, .Blue = 0.340 }, MaterialType::Model3d));
-    // 2D
-    Cache.Insert<Material>("SpriteTextured", Material({ .Red = 0.0, .Green = 0.0, .Blue = 0.0 }, MaterialType::Sprite2d, { Cache.Find<openglTexture>("Rock") }));
-    Cache.Insert<Material>("SpriteColored", Material({ .Red = 0.0, .Green = 0.0, .Blue = 0.0 }, MaterialType::Sprite2d));
 }
 
 void Application::LoadTextures()
 {
-    Cache.Insert<openglTexture>("Rock", openglTexture("Image", "res/Textures/rocks.jpg"));
 }
 
 void Application::LoadSounds()
@@ -177,12 +171,12 @@ void Application::LoadSounds()
 
 void Application::LoadSprites()
 {
-    Cache.Insert<openglSprite>("Sprite", openglSprite{});
     mTexturedSprite.Init(mSpriteTexturedShader);
     mColoredSprite.Init(mSpriteColoredShader);
 }
 
 void Application::LoadTexts()
 {
-    mHelloText.LoadFont("res/Fonts/Hey Comic.ttf");
+    static_cast<Entity&>(mAmmoCounterText) = mActiveLevel.CreateUiTextEntity(Transform(glm::vec3(540.0f, 570.0f, 0.0f), glm::vec3(0.0), glm::vec3(1.0f)),openglText("Ammo 30", 25), Material({ .Red = 1.0,.Green = 1.0,.Blue = 1.0 }, MaterialType::Text));
+    mAmmoCounterText.GetComponent<openglText>().LoadFont("res/Fonts/Hey Comic.ttf");
 }

@@ -27,7 +27,7 @@ public:
 
 	void Free();
 
-	GLuint GetVertexArray() { return mArrayObject.val; }
+	GLuint GetVertexArray() { return mArrayObject.mVal; }
 
 	std::vector<uint32_t>& GetIndices() { return mIndices; }
 

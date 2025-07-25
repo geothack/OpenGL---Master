@@ -19,6 +19,8 @@
 
 #include <box2d/box2d.h>
 
+#include <entt/entt.hpp>
+
 // Standard Library Includes
 #include <print>
 #include <stacktrace>
@@ -39,6 +41,7 @@
 #include "Core/Log.h"
 #include "Physics/3D/Environment.h"
 #include "Models/ModelArray.h"
+#include "World/Entity.h"
 
 // Third Party Class
 #include "stb_image.h"

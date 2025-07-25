@@ -5,36 +5,36 @@
 class BufferObject {
 public:
     BufferObject(GLenum type = GL_ARRAY_BUFFER)
-        : type(type)
+        : mType(type)
     {
     }
 
     void Generate() 
     {
-        glGenBuffers(1, &val);
+        glGenBuffers(1, &mVal);
     }
 
     void Attach() const
     {
-        glBindBuffer(type, val);
+        glBindBuffer(mType, mVal);
     }
 
     template<typename T>
     void SetData(GLuint noElements, T* data, GLenum usage)
     {
-        glBufferData(type, noElements * sizeof(T), data, usage);
+        glBufferData(mType, noElements * sizeof(T), data, usage);
     }
 
     template<typename T>
     void SetData(T& data, GLenum usage)
     {
-        glBufferData(type, sizeof(data), data, usage);
+        glBufferData(mType, sizeof(data), data, usage);
     }
 
     template<typename T>
     void UpdateData(GLintptr offset, GLuint noElements, T* data) 
     {
-        glBufferSubData(type, offset, noElements * sizeof(T), data);
+        glBufferSubData(mType, offset, noElements * sizeof(T), data);
     }
 
     template<typename T>
@@ -50,16 +50,16 @@ public:
 
     void Detach() const
     {
-        glBindBuffer(type, 0);
+        glBindBuffer(mType, 0);
     }
 
     void Free() const
     {
-        glDeleteBuffers(1, &val);
+        glDeleteBuffers(1, &mVal);
     }
 
-    GLuint val;
-    GLenum type;
+    GLuint mVal;
+    GLenum mType;
 };
 
 class ArrayObject
@@ -67,17 +67,17 @@ class ArrayObject
 public:
     BufferObject& operator[](const char* key)
     {
-        return buffers[key];
+        return mBuffers[key];
     }
 
     void Generate() 
     {
-        glGenVertexArrays(1, &val);
+        glGenVertexArrays(1, &mVal);
     }
 
     void Attach() const
     {
-        glBindVertexArray(val);
+        glBindVertexArray(mVal);
     }
 
     void Draw(GLenum mode, GLuint first, GLuint count) const
@@ -92,8 +92,8 @@ public:
 
     void Free() 
     {
-        glDeleteVertexArrays(1, &val);
-        for (auto& pair : buffers)
+        glDeleteVertexArrays(1, &mVal);
+        for (auto& pair : mBuffers)
         {
             pair.second.Free();
         }
@@ -105,7 +105,7 @@ public:
     }
 
 
-    GLuint val;
+    GLuint mVal;
 
-    std::map<const char*, BufferObject> buffers;
+    std::map<const char*, BufferObject> mBuffers;
 };

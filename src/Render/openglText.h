@@ -17,23 +17,20 @@ class openglText
 {
 public:
 	openglText() = default;
-	openglText(const Material& material, const Transform& transform, std::string_view message, const int height);
+	openglText(std::string_view message, const int height);
 	~openglText() = default;
 
 	void LoadFont(const std::filesystem::path& path);
-	void RenderFont();
+	void RenderFont(Material& material, Transform& transform);
 
 	std::string Message = "";
 
 	std::map<GLchar, Character> Characters;
 
-	GLuint GetVertexArray() { return mArrayObject.val; }
-	GLuint GetVertexBuffer() { return mArrayObject["VBO"].val; }
+	GLuint GetVertexArray() { return mArrayObject.mVal; }
+	GLuint GetVertexBuffer() { return mArrayObject["VBO"].mVal; }
 
 private:
-	Material mMaterial;
-	Transform mTransform;
-
 	glm::mat4 mWorld;
 
 	ArrayObject mArrayObject;

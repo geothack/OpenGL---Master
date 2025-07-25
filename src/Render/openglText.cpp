@@ -3,8 +3,7 @@
 #include "Core/Error.h"
 #include "glfwWindow.h"
 
-openglText::openglText(const Material& material, const Transform& transform, std::string_view message, const int height) : mMaterial(material), mTransform(transform), Message(message.data())
-	, mHeight(height)
+openglText::openglText(std::string_view message, const int height) : Message(message.data()), mHeight(height)
 {
 
 }
@@ -98,17 +97,17 @@ void openglText::LoadFont(const std::filesystem::path& path)
 
 }
 
-void openglText::RenderFont()
+void openglText::RenderFont(Material& material, Transform& transform)
 {
-    auto copyX = mTransform.GetPosition().x;
-    mMaterial.Attach();
-    mMaterial.AttachColors();
+    auto copyX = transform.GetPosition().x;
+    material.Attach();
+    material.AttachColors();
     glActiveTexture(GL_TEXTURE0);
     mArrayObject.Attach();
 
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(glfwWindow::GetSize().Width), 0.0f, static_cast<float>(glfwWindow::GetSize().Height));
-    mMaterial.Attach();
-    mMaterial.SetMat4("projection", projection);
+    material.Attach();
+    material.SetMat4("projection", projection);
 
     std::string::const_iterator c;
     for (c = Message.begin(); c != Message.end(); c++)
@@ -117,29 +116,29 @@ void openglText::RenderFont()
 
         if (*c == '\n')
         {
-            mTransform.SetPosition(glm::vec3(copyX, mTransform.GetPosition().y -= ((ch.Size.y)) * 1.3 * mTransform.GetScale().x, mTransform.GetPosition().z));
+            transform.SetPosition(glm::vec3(copyX, transform.GetPosition().y -= ((ch.Size.y)) * 1.3 * transform.GetScale().x, transform.GetPosition().z));
         }
         else if (*c == ' ')
         {
-            mTransform.SetPosition(glm::vec3(mTransform.GetPosition().x += ((ch.Advance >> 6)) * mTransform.GetScale().x,mTransform.GetPosition().y,mTransform.GetPosition().z));
+            transform.SetPosition(glm::vec3(transform.GetPosition().x += ((ch.Advance >> 6)) * transform.GetScale().x,transform.GetPosition().y,transform.GetPosition().z));
         }
         else
         {
 
-            float xpos = mTransform.GetPosition().x + ch.Bearing.x * mTransform.GetScale().x;
-            float ypos = mTransform.GetPosition().y - (ch.Size.y - ch.Bearing.y) * mTransform.GetScale().x;
+            float xpos = transform.GetPosition().x + ch.Bearing.x * transform.GetScale().x;
+            float ypos = transform.GetPosition().y - (ch.Size.y - ch.Bearing.y) * transform.GetScale().x;
 
-            mWorld = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(ch.Size.x * mTransform.GetScale().x, ch.Size.y * mTransform.GetScale().x, 0));
-            mMaterial.SetMat4("transform", mWorld);
+            mWorld = glm::translate(glm::mat4(1.0f), glm::vec3(xpos, ypos, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(ch.Size.x * transform.GetScale().x, ch.Size.y * transform.GetScale().x, 0));
+            material.SetMat4("transform", mWorld);
 
             glBindTexture(GL_TEXTURE_2D, ch.TextureID);
             mArrayObject["VBO"].Attach();
 
             glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, 1);
-            mTransform.SetPosition(glm::vec3(mTransform.GetPosition().x += (ch.Advance >> 6) * mTransform.GetScale().x, mTransform.GetPosition().y, mTransform.GetPosition().z));
+            transform.SetPosition(glm::vec3(transform.GetPosition().x += (ch.Advance >> 6) * transform.GetScale().x, transform.GetPosition().y, transform.GetPosition().z));
         }
     }
-    mTransform.SetPosition(glm::vec3(copyX, mTransform.GetPosition().y, mTransform.GetPosition().z));
+    transform.SetPosition(glm::vec3(copyX, transform.GetPosition().y, transform.GetPosition().z));
 
     ArrayObject::Detach();
     mArrayObject["VBO"].Detach();
