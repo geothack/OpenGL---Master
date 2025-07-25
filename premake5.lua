@@ -1,7 +1,8 @@
 
 workspace "OpenGL-Master"
-    configurations {"Debug","Release"}
-    
+    configurations {"Debug","Release"}    
+
+    startproject "OpenGL-Master"
 
 project "OpenGL-Master"
     kind "ConsoleApp"
@@ -90,4 +91,12 @@ project "OpenGL-Master"
       --postbuildcommands { "{COPY} libs/sdl3/lib/x64/SDL3.dll bin/Release" }
       --postbuildcommands { "{COPY} libs/openal/libs/OpenAL32.dll bin/Release" }
 
-    
+
+project "Dear-ImGui"
+    kind "StaticLib"
+
+    language "C++"
+    cppdialect "C++latest"
+    targetdir "bin/%{cfg.buildcfg}"
+
+    architecture ("x64")
