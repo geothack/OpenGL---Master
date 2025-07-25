@@ -85,6 +85,13 @@ private:
 	openglShader instancedShader = openglShader("res/Shaders/Models/ModelInstanced.vert", "res/Shaders/Models/ModelInstanced.frag");
 	openglShader mBoxShader = openglShader("res/Shaders/Models/Box.vert", "res/Shaders/Models/Box.frag");
 
+	openglShader mFireShader = openglShader("res/Shaders/Noise/Fire.vert","res/Shaders/Noise/Fire.frag");
+	openglTexture mFireNoiseTexture = openglTexture("uDiffuseSampler","res/Textures/flame.png");
+	Cube mFireCube = Cube(Transform(glm::vec3(-4.5, 2.5, 0.0), glm::vec3(0.0,0.0,1), glm::vec3(0.5)), mGameCamera);
+
+	openglShader mMarbleShader = openglShader("res/Shaders/Noise/Marble.vert", "res/Shaders/Noise/Marble.frag");
+	Cube mMarbleCube = Cube(Transform(glm::vec3(2.5, 0.5, 5.0), glm::vec3(0.0, 0.0, 1), glm::vec3(0.5)), mGameCamera);
+
 	Box mBox{};
 
 	// Levels

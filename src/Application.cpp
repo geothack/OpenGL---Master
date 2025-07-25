@@ -3,6 +3,8 @@
 #include "Input/Input.h"
 #include "Core/ResourceCache.h"
 
+float counter = 0;
+
 Application::Application()
 {
 	Init();
@@ -95,6 +97,24 @@ void Application::Update()
         mColouredMaterial2.AttachColors();
         mSphere.Render(mColouredMaterial2, mGameCamera, mBox, mDeltaTime);
 
+        mFireNoiseTexture.Attach();
+        glBindTextureUnit(0, mFireNoiseTexture.GetHandle());
+
+        mFireShader.Attach();
+        mFireShader.SetFloat("time", counter * 0.1);
+        mFireShader.SetInt("uDiffuseSampler", 0);
+
+        mFireCube.Render(mFireShader, mGameCamera, mBox, mDeltaTime);
+
+        mMarbleCube.Render(mMarbleShader, mGameCamera, mBox, mDeltaTime);
+
+        counter += 0.25f;
+
+        if (counter > 2)
+        {
+            counter = 0;
+        }
+
         mTroll.Render(mTrollMaterial,mGameCamera,mBox,mDeltaTime);
 
         mM4Material.Attach();
@@ -152,6 +172,9 @@ void Application::LoadMeshes()
     mPlane.Init(mColouredMaterial);
     mSphere.Init(mColouredMaterial2);
     mBox.Init(mGameCamera);
+
+    mFireCube.Init(mFireShader);
+    mMarbleCube.Init(mMarbleShader);
 
     mTroll.Load("res/Models/Troll","scene.gltf");
     mM4.Load("res/Models/M4A1","scene.gltf");

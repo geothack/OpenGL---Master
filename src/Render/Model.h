@@ -10,12 +10,6 @@
 #include "Models/Box.h"
 #include "Render/Camera.h"
 
-struct CameraData
-{
-	alignas(16) glm::mat4 Projection;
-	alignas(16) glm::mat4 View;
-};
-
 class Model
 {
 public:

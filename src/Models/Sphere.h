@@ -21,9 +21,21 @@ public:
         mUniformBuffer.BindUBOToShader("CameraData", material.GetHandle(), "Camera");
     }
 
+    void Init(openglShader& shader)
+    {
+        Load("res/Models/Sphere", "scene.gltf");
+
+        mUniformBuffer.BindUBOToShader("CameraData", shader.GetProgram(), "Camera");
+    }
+
     void Render(Material& material, Camera& camera, Box& box, const float delta)
     {
         Model::Render(material,camera,box,delta);
+    }
+
+    void Render(openglShader& shader, Camera& camera, Box& box, const float delta)
+    {
+        Model::Render(shader, camera, box, delta);
     }
 
 };

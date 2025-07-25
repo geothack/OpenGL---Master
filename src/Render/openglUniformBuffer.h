@@ -1,5 +1,10 @@
 #pragma once
 
+struct CameraData
+{
+    alignas(16) glm::mat4 Projection;
+    alignas(16) glm::mat4 View;
+};
 
 class openglUniformBuffer
 {

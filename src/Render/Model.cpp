@@ -92,7 +92,7 @@ void Model::Render(openglShader& shader, Camera& camera, Box& box, const float d
 
 		if (mTransform.GetRotation() != glm::vec3(0.0))
 		{
-			model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
+			model = glm::rotate(model, glm::radians(180.0f), glm::normalize(mTransform.GetRotation()));
 		}
 
 		shader.Attach();
