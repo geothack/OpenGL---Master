@@ -22,6 +22,7 @@ project "OpenGL-Master"
         "deps/ttf/include",
         "deps/box2d/include",
         "deps/entt/include",
+        "deps/imgui/include",
     }
 
     libdirs 
