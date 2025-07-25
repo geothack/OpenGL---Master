@@ -66,7 +66,7 @@ private:
 
 	Material mTrollMaterial = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.28 }, MaterialType::AssimpModel);
 
-	Model mTroll = Model(Transform(glm::vec3(5.0,1.0f,0.0f),glm::vec3(0.0),glm::vec3(0.01)),mGameCamera);
+	Model mTroll = Model(Transform(glm::vec3(5.0,1.0f,0.0f),glm::vec3(0.0,0,0.0),glm::vec3(0.01)),mGameCamera);
 
 	Material mM4Material = Material({ .Red = 0.59, .Green = 0.79, .Blue = 0.88 }, MaterialType::AssimpModelColored);
 
@@ -87,7 +87,7 @@ private:
 
 	openglShader mFireShader = openglShader("res/Shaders/Noise/Fire.vert","res/Shaders/Noise/Fire.frag");
 	openglTexture mFireNoiseTexture = openglTexture("uDiffuseSampler","res/Textures/flame.png");
-	Cube mFireCube = Cube(Transform(glm::vec3(-4.5, 2.5, 0.0), glm::vec3(0.0,0.0,1), glm::vec3(0.5)), mGameCamera);
+	Cube mFireCube = Cube(Transform(glm::vec3(-4.5, 2.5, 0.0), glm::vec3(0.0,0.0,180), glm::vec3(0.5)), mGameCamera);
 
 	openglShader mMarbleShader = openglShader("res/Shaders/Noise/Marble.vert", "res/Shaders/Noise/Marble.frag");
 	Cube mMarbleCube = Cube(Transform(glm::vec3(2.5, 0.5, 5.0), glm::vec3(0.0, 0.0, 1), glm::vec3(0.5)), mGameCamera);

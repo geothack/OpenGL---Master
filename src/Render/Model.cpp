@@ -58,9 +58,17 @@ void Model::Render(Material& material, Camera& camera, Box& box, const float del
 		model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
 		model = glm::scale(model, mTransform.GetScale());
 
-		if (mTransform.GetRotation() != glm::vec3(0.0))
+		if (mTransform.GetRotation().x != 0.0f)
 		{
-			model = glm::rotate(model, glm::radians(20.0f), mTransform.GetRotation());
+			model = glm::rotate(model, glm::radians(mTransform.GetRotation().x), glm::vec3(mTransform.GetRotation().x, 0, 0));
+		}
+		if (mTransform.GetRotation().y != 0.0f)
+		{
+			model = glm::rotate(model, glm::radians(mTransform.GetRotation().y), glm::vec3(0, mTransform.GetRotation().y, 0));
+		}
+		if (mTransform.GetRotation().z != 0.0f)
+		{
+			model = glm::rotate(model, glm::radians(mTransform.GetRotation().z), glm::vec3(0, 0, mTransform.GetRotation().z));
 		}
 
 		material.Attach();
@@ -90,9 +98,17 @@ void Model::Render(openglShader& shader, Camera& camera, Box& box, const float d
 		model = glm::translate(model, mRigidbody.GetTransform().GetPosition());
 		model = glm::scale(model, mTransform.GetScale());
 
-		if (mTransform.GetRotation() != glm::vec3(0.0))
+		if (mTransform.GetRotation().x != 0.0f)
 		{
-			model = glm::rotate(model, glm::radians(180.0f), glm::normalize(mTransform.GetRotation()));
+			model = glm::rotate(model, glm::radians(mTransform.GetRotation().x), glm::vec3(mTransform.GetRotation().x,0,0));
+		}
+		if (mTransform.GetRotation().y != 0.0f)
+		{
+			model = glm::rotate(model, glm::radians(mTransform.GetRotation().y), glm::vec3(0,mTransform.GetRotation().y, 0));
+		}
+		if (mTransform.GetRotation().z != 0.0f)
+		{
+			model = glm::rotate(model, glm::radians(mTransform.GetRotation().z), glm::vec3(0,0,mTransform.GetRotation().z));
 		}
 
 		shader.Attach();
