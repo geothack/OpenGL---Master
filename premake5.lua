@@ -38,6 +38,7 @@ project "OpenGL-Master"
     {
        "glfw3.dll",
        "glfw3.lib",
+       "Dear-ImGui",
        --"freetype.lib",
        --"freetype.dll",
        --"OpenAL32.lib",
@@ -100,3 +101,14 @@ project "Dear-ImGui"
     targetdir "bin/%{cfg.buildcfg}"
 
     architecture ("x64")
+
+    files
+    { 
+      "deps/imgui/**.h", 
+      "deps/imgui/**.cpp"
+    }
+
+    includedirs 
+    { 
+        "deps/glfw/include", 
+    }

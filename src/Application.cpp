@@ -85,6 +85,12 @@ void Application::Update()
             
         }
 
+        if (GInput->KeyWentDown(GLFW_KEY_M))
+        {
+            mRenderImGui = !mRenderImGui;
+        }
+
+      
         BoxCollider collider = BoxCollider(BoundTypes::AABB, mBox, glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.5));
         mCube.Render(mTexturedMaterial,mGameCamera, mBox, mDeltaTime);
 
@@ -131,6 +137,10 @@ void Application::Update()
 
         glDisable(GL_DEPTH_TEST);
 
+        if (mRenderImGui)
+        {
+            mImGui.Render();
+        }
 
         auto spriteTransform = Transform(glm::vec3(10.0f, 540.0f, 0.0f), glm::vec3(270.0f, 0.0f, 0.0f), glm::vec3(50.0f, 50.0f, 0.0f));
         mTexturedSprite.Render(mSpriteTexturedShader,spriteTransform, mRockTexture);

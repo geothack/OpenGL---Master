@@ -14,6 +14,7 @@
 #include "Models/Box.h"
 #include "Gameplay/AmmoText.h"
 #include "World/Level.h"
+#include "Core/imgui.h"
 
 class Application
 {
@@ -99,6 +100,10 @@ private:
 
 	// Gameplay Entities
 	AmmoText mAmmoCounterText{};
+
+	imgui mImGui = imgui(mGameWindow);
+
+	bool mRenderImGui = false;
 
 };
 
